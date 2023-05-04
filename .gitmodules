@@ -1,0 +1,3 @@
+[submodule "face_parsing_PyTorch"]
+	path = face_parsing_PyTorch
+	url = https://github.com/harrywenjie/face_parsing_PyTorch.git

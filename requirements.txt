@@ -1,0 +1,8 @@
+mtcnn
+torch
+torchvision
+pillow
+numpy
+opencv-python
+tensorflow
+scikit-image
