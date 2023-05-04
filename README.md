@@ -4,31 +4,45 @@ FaceGenSeg is a powerful tool that performs face detection, gender detection, an
 
 ## Installation
 
-1. sudo apt install python3.10-venv
+1. Install python 3.10.6
+
+
+2. Make sure venv pacakge is installed
+```bash
+sudo apt install python3.10-venv
+```
 
 2. Clone this repository:
 
 3. Change to the project directory:
 
+```bash
 cd FaceGenSeg
+```
 
 3. Create a Python virtual environment:
 
+```bash
 python3 -m venv venv
-
+```
 
 4. Activate the virtual environment:
 
+```bash
 source venv/bin/activate
-
+```
 
 5. Install the required packages:
-pip install -r requirements.txt
 
+```bash
+pip install -r requirements.txt
+```
 
 6. Install the `tkinter` package for your system's Python installation (required for the GUI version):
-sudo apt-get install python3.10-tk
 
+```bash
+sudo apt-get install python3.10-tk
+```
 ## Usage
 
 ### API Version
