@@ -15,6 +15,9 @@ def main(input_path):
     # Set up BiSeNet for face segmentation
     bisenet_model = setup_bisenet()
 
+    output_dir = 'output'
+    os.makedirs(output_dir, exist_ok=True)
+
     for i, face_data in enumerate(face_gender_data):
         bounding_box = face_data['bounding_box']
         x, y, w, h = bounding_box
@@ -24,7 +27,7 @@ def main(input_path):
         face_mask = segment_face(bisenet_model, face_image)
 
         # Save face mask
-        mask_filename = f"face_mask_{i}.png"
+        mask_filename = os.path.join(output_dir, f"face_mask_{i}.png")
         cv2.imwrite(mask_filename, face_mask)
 
         # Print face and gender information
