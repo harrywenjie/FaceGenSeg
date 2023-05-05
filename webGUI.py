@@ -21,7 +21,7 @@ def index():
 
         file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
         input_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
-        main_API.main(input_path)
+        main.main(input_path)
         return send_from_directory(app.config["UPLOAD_FOLDER"], "face_mask_0.png", as_attachment=True)
 
     return """
