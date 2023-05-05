@@ -24,7 +24,7 @@ def main(input_path):
         face_image = image[y:y+h, x:x+w]
 
         # Segment face using BiSeNet
-        face_mask = segment_face(bisenet_model, face_image)
+        face_mask = segment_face(bisenet_model, image, face_image, bounding_box)
 
         # Save face mask
         mask_filename = os.path.join(output_dir, f"face_mask_{i}.png")
