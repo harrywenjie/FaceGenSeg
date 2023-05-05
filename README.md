@@ -56,9 +56,10 @@ pip install nvidia-tensorrt
 ### API Version
 
 1. Run the main script by passing the image path as an argument:
-
-python main.py --input_path /path/to/your/image.jpg
-
+```bash
+python main.py /path/to/your/image.jpg
+python main.py ~/Downloads/test.png
+```
 
 2. The script will detect faces, determine their gender, and perform face segmentation. The segmented face masks will be saved as `face_mask_X.png` in the current directory, where `X` is the face number.
 
