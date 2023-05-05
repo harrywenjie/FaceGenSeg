@@ -21,10 +21,20 @@ def main(input_path):
     for i, face_data in enumerate(face_gender_data):
         bounding_box = face_data['bounding_box']
         x, y, w, h = bounding_box
-        face_image = image[y:y+h, x:x+w]
+        
+        # Increase the size of the bounding box by a small factor
+        scale_factor = 1.8
+        new_w = int(w * scale_factor)
+        new_h = int(h * scale_factor)
+        new_x = max(0, x - (new_w - w) // 2)
+        new_y = max(0, y - (new_h - h) // 2)
+
+        new_bounding_box = (new_x, new_y, new_w, new_h)
+
+        face_image = image[new_y:new_y+new_h, new_x:new_x+new_w]
 
         # Segment face using BiSeNet
-        face_mask = segment_face(bisenet_model, image, face_image, bounding_box)
+        face_mask = segment_face(bisenet_model, image, face_image, new_bounding_box)
 
         # Save face mask
         mask_filename = os.path.join(output_dir, f"face_mask_{i}.png")
