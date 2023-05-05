@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, send_from_directory
 import os
-import main_API
+import main
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = "uploads"
