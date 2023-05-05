@@ -43,6 +43,14 @@ pip install -r requirements.txt
 ```bash
 sudo apt-get install python3.10-tk
 ```
+
+7. 
+
+```bash
+pip install nvidia-pyindex
+pip install nvidia-tensorrt
+```
+
 ## Usage
 
 ### API Version
