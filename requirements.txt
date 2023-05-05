@@ -1,10 +1,10 @@
 mtcnn
-torch
+torch==2.0.0+cu118 torchvision==0.15.0+cu118 torchaudio==2.0.0 -f 
 torchvision
 pillow
 numpy
 opencv-python
-tensorflow
+tensorflow-gpu==2.8.0
 scikit-image
 tqdm
 fastapi
