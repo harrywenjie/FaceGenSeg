@@ -28,9 +28,4 @@ def segment_face(net, face_image):
     parsing = out.squeeze(0).cpu().numpy().argmax(0)
     resized_parsing = cv2.resize(parsing, (face_image.shape[1], face_image.shape[0]), interpolation=cv2.INTER_NEAREST)
 
-    # Scale the mask values for better visualization
-    resized_parsing *= 10
-
-    plt.imshow(resized_parsing)
-    plt.show()
     return resized_parsing
