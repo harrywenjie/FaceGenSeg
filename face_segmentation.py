@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 from torchvision import transforms
 from face_parsing_PyTorch.model import BiSeNet
+import matplotlib.pyplot as plt
 
 def setup_bisenet(pretrained_model_path='face_parsing_PyTorch/res/cp/79999_iter.pth'):
     net = BiSeNet(n_classes=19)
@@ -22,10 +23,11 @@ def segment_face(net, face_image):
     with torch.no_grad():
         img = Image.fromarray(cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB))
         img_tensor = to_tensor(img).unsqueeze(0)
-        out = net(img_tensor)[0]  # Add [0] to match the original demo code
+        out = net(img_tensor)[0]
 
-    #print("out:", out)
     parsing = out.squeeze(0).cpu().numpy().argmax(0)
-    return parsing
+    resized_parsing = cv2.resize(parsing, (face_image.shape[1], face_image.shape[0]), interpolation=cv2.INTER_NEAREST)
 
-
+    plt.imshow(resized_parsing)
+    plt.show()
+    return resized_parsing
