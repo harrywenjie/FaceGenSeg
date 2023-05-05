@@ -22,8 +22,10 @@ def segment_face(net, face_image):
     with torch.no_grad():
         img = Image.fromarray(cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB))
         img_tensor = to_tensor(img).unsqueeze(0)
-        out = net(img_tensor)
+        out = net(img_tensor)[0]  # Add [0] to match the original demo code
 
+    #print("out:", out)
     parsing = out.squeeze(0).cpu().numpy().argmax(0)
     return parsing
+
 

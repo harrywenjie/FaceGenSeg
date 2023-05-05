@@ -9,7 +9,7 @@ def detect_faces_and_gender(image):
     for face in faces:
         bounding_box = face['box']
         keypoints = face['keypoints']
-        gender = face['attributes']['gender']
+        gender = face.get('attributes', {}).get('gender', 'unknown')
 
         face_data = {
             'bounding_box': bounding_box,
