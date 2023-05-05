@@ -5,3 +5,4 @@ venv/
 face_parsing_PyTorch/__pycache__/
 __pycache__/
 output/
+.vscode/
