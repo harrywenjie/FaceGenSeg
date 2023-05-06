@@ -44,7 +44,9 @@ def main(input_path):
         print(f"Face {i + 1}:")
         print(f"  Bounding box: {bounding_box}")
         print(f"  Gender: {face_data['gender']}")
+        print(f"  Confidence: {face_data['confidence']}")  # Add this line to print the confidence score
         print(f"  Mask saved as: {mask_filename}")
+
 
     print("Processing complete!")
 
