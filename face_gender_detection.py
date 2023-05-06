@@ -2,7 +2,7 @@ import cv2
 from mtcnn import MTCNN
 
 # MTCNN parameters for easier tweaking
-MIN_FACE_SIZE = 20
+MIN_FACE_SIZE = 30
 SCALE_FACTOR = 0.709
 STEPS_THRESHOLD = [0.6, 0.7, 0.7]
 CONFIDENCE_THRESHOLD = 0.99
