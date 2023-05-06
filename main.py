@@ -9,6 +9,9 @@ from face_segmentation import setup_bisenet, segment_face
 def main(input_path):
     image = cv2.imread(input_path)
 
+    # Extract original file name without extension
+    original_name = os.path.splitext(os.path.basename(input_path))[0]
+
     # Detect faces and gender
     face_gender_data = detect_faces_and_gender(image)
 
@@ -21,7 +24,7 @@ def main(input_path):
     for i, face_data in enumerate(face_gender_data):
         bounding_box = face_data['bounding_box']
         x, y, w, h = bounding_box
-        
+
         # Increase the size of the bounding box by a small factor
         scale_factor = 1.8
         new_w = int(w * scale_factor)
@@ -36,17 +39,17 @@ def main(input_path):
         # Segment face using BiSeNet
         face_mask = segment_face(bisenet_model, image, face_image, new_bounding_box)
 
-        # Save face mask
-        mask_filename = os.path.join(output_dir, f"face_mask_{i}.png")
+        # Save face mask with the specified format
+        gender_letter = 'f' if face_data['gender'] == 'Female' else 'm'
+        mask_filename = os.path.join(output_dir, f"{original_name}_mask_{gender_letter}_{i + 1}.png")
         cv2.imwrite(mask_filename, face_mask)
 
         # Print face and gender information
         print(f"Face {i + 1}:")
         print(f"  Bounding box: {bounding_box}")
         print(f"  Gender: {face_data['gender']}")
-        print(f"  Confidence: {face_data['confidence']}")  # Add this line to print the confidence score
+        print(f"  Confidence: {face_data['confidence']}") 
         print(f"  Mask saved as: {mask_filename}")
-
 
     print("Processing complete!")
 
