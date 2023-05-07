@@ -12,14 +12,18 @@ gender_model = "models/gender_net.caffemodel"
 gender_list = ['Male', 'Female']
 gender_net = cv2.dnn.readNet(gender_model, gender_proto)
 
-CONFIDENCE_THRESHOLD = 0.99
+FACE_CONFIDENCE_THRESHOLD = 0.5
+GENDER_CONFIDENCE_THRESHOLD = 0.5
 
 def predict_gender(net, face_image):
     blob = cv2.dnn.blobFromImage(face_image, 1.0, (227, 227), (78.4263377603, 87.7689143744, 114.895847746), swapRB=False)
     net.setInput(blob)
     gender_preds = net.forward()
-    gender = gender_list[gender_preds[0].argmax()]
-    return gender
+    max_index = gender_preds[0].argmax()
+    gender = gender_list[max_index]
+    confidence = gender_preds[0][max_index]
+
+    return gender, confidence
 
 def detect_faces_and_gender(image):
     h, w = image.shape[:2]
@@ -30,7 +34,7 @@ def detect_faces_and_gender(image):
     face_gender_data = []
     for i in range(detections.shape[2]):
         confidence = detections[0, 0, i, 2]
-        if confidence >= CONFIDENCE_THRESHOLD:
+        if confidence >= FACE_CONFIDENCE_THRESHOLD:
             x1 = int(detections[0, 0, i, 3] * w)
             y1 = int(detections[0, 0, i, 4] * h)
             x2 = int(detections[0, 0, i, 5] * w)
@@ -38,13 +42,15 @@ def detect_faces_and_gender(image):
 
             bounding_box = (x1, y1, x2 - x1, y2 - y1)
             face_image = image[y1:y2, x1:x2]
-            gender = predict_gender(gender_net, face_image)
+            gender, gender_confidence = predict_gender(gender_net, face_image)
 
-            face_data = {
-                'bounding_box': bounding_box,
-                'gender': gender,
-                'confidence': confidence
-            }
-            face_gender_data.append(face_data)
+            if gender_confidence >= GENDER_CONFIDENCE_THRESHOLD:
+                face_data = {
+                    'bounding_box': bounding_box,
+                    'gender': gender,
+                    'confidence': confidence,
+                    'gender_confidence': gender_confidence  # Add this line to include the gender confidence in face_data
+                }
+                face_gender_data.append(face_data)
 
     return face_gender_data
