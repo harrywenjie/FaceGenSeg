@@ -40,7 +40,7 @@ def main(input_path):
         face_mask = segment_face(bisenet_model, image, face_image, new_bounding_box)
 
         # Save face mask with the specified format
-        gender_letter = 'f' if face_data['gender'] == 'Female' else 'm'
+        gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
         mask_filename = os.path.join(output_dir, f"{original_name}_mask_{gender_letter}_{i + 1}.png")
         cv2.imwrite(mask_filename, face_mask)
 

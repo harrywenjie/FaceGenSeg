@@ -13,7 +13,7 @@ gender_list = ['Male', 'Female']
 gender_net = cv2.dnn.readNet(gender_model, gender_proto)
 
 FACE_CONFIDENCE_THRESHOLD = 0.5
-GENDER_CONFIDENCE_THRESHOLD = 0.5
+GENDER_CONFIDENCE_THRESHOLD = 0.985
 
 def predict_gender(net, face_image):
     blob = cv2.dnn.blobFromImage(face_image, 1.0, (227, 227), (78.4263377603, 87.7689143744, 114.895847746), swapRB=False)
@@ -44,13 +44,16 @@ def detect_faces_and_gender(image):
             face_image = image[y1:y2, x1:x2]
             gender, gender_confidence = predict_gender(gender_net, face_image)
 
-            if gender_confidence >= GENDER_CONFIDENCE_THRESHOLD:
-                face_data = {
-                    'bounding_box': bounding_box,
-                    'gender': gender,
-                    'confidence': confidence,
-                    'gender_confidence': gender_confidence  # Add this line to include the gender confidence in face_data
-                }
-                face_gender_data.append(face_data)
+            # Set gender to "Unknown" if gender confidence is below threshold
+            if gender_confidence < GENDER_CONFIDENCE_THRESHOLD:
+                gender = "Unknown"
+
+            face_data = {
+                'bounding_box': bounding_box,
+                'gender': gender,
+                'confidence': confidence,
+                'gender_confidence': gender_confidence
+            }
+            face_gender_data.append(face_data)
 
     return face_gender_data
