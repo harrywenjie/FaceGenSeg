@@ -1,18 +1,18 @@
 import cv2
 import numpy as np
-from mtcnn import MTCNN
 
-# MTCNN parameters for easier tweaking
-MIN_FACE_SIZE = 30
-SCALE_FACTOR = 0.709
-STEPS_THRESHOLD = [0.6, 0.7, 0.7]
-CONFIDENCE_THRESHOLD = 0.99
+# Initialize face detection model
+face_proto = "models/res10_300x300_ssd_deploy.prototxt"
+face_model = "models/res10_300x300_ssd_iter_140000.caffemodel"
+face_net = cv2.dnn.readNet(face_model, face_proto)
 
 # Initialize gender detection model
 gender_proto = "models/deploy.prototxt"
 gender_model = "models/gender_net.caffemodel"
 gender_list = ['Male', 'Female']
 gender_net = cv2.dnn.readNet(gender_model, gender_proto)
+
+CONFIDENCE_THRESHOLD = 0.99
 
 def predict_gender(net, face_image):
     blob = cv2.dnn.blobFromImage(face_image, 1.0, (227, 227), (78.4263377603, 87.7689143744, 114.895847746), swapRB=False)
@@ -22,27 +22,26 @@ def predict_gender(net, face_image):
     return gender
 
 def detect_faces_and_gender(image):
-    # Initialize MTCNN with custom parameters
-    detector = MTCNN(min_face_size=MIN_FACE_SIZE, 
-                     scale_factor=SCALE_FACTOR, 
-                     steps_threshold=STEPS_THRESHOLD)
-    
-    faces = detector.detect_faces(image)
+    h, w = image.shape[:2]
+    blob = cv2.dnn.blobFromImage(image, 1.0, (300, 300), (104.0, 177.0, 123.0), False, False)
+    face_net.setInput(blob)
+    detections = face_net.forward()
 
     face_gender_data = []
-    for face in faces:
-        confidence = face['confidence']
+    for i in range(detections.shape[2]):
+        confidence = detections[0, 0, i, 2]
         if confidence >= CONFIDENCE_THRESHOLD:
-            bounding_box = face['box']
-            keypoints = face['keypoints']
+            x1 = int(detections[0, 0, i, 3] * w)
+            y1 = int(detections[0, 0, i, 4] * h)
+            x2 = int(detections[0, 0, i, 5] * w)
+            y2 = int(detections[0, 0, i, 6] * h)
 
-            x, y, w, h = bounding_box
-            face_image = image[y:y+h, x:x+w]
-            gender = predict_gender(gender_net, face_image)  # Use the predict_gender function to detect gender
+            bounding_box = (x1, y1, x2 - x1, y2 - y1)
+            face_image = image[y1:y2, x1:x2]
+            gender = predict_gender(gender_net, face_image)
 
             face_data = {
                 'bounding_box': bounding_box,
-                'keypoints': keypoints,
                 'gender': gender,
                 'confidence': confidence
             }
