@@ -12,7 +12,7 @@ gender_model = "models/gender_net.caffemodel"
 gender_list = ['Male', 'Female']
 gender_net = cv2.dnn.readNet(gender_model, gender_proto)
 
-FACE_CONFIDENCE_THRESHOLD = 0.5
+FACE_CONFIDENCE_THRESHOLD = 0.25
 GENDER_CONFIDENCE_THRESHOLD = 0.985
 
 def predict_gender(net, face_image):
