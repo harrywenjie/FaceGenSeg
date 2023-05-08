@@ -3,7 +3,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
 import cv2
 import argparse
-from face_gender_detection import detect_faces_and_gender, create_face_mask
+from face_gender_detection import detect_faces_and_gender
 from face_segmentation import setup_bisenet, segment_face_with_check
 
 def main(input_path):
@@ -39,10 +39,6 @@ def main(input_path):
         # Segment face using BiSeNet
         face_mask, segmentation_success = segment_face_with_check(bisenet_model, image, face_image, new_bounding_box)
 
-        if not segmentation_success:
-            print(f"  Segmentation failed for face {i + 1}, using alternative method")
-            face_mask = create_face_mask(image)
-
         # Save face mask with the specified format
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
         mask_filename = os.path.join(output_dir, f"{original_name}_mask_{gender_letter}_{i + 1}.png")
@@ -55,6 +51,9 @@ def main(input_path):
         # print(f"  Gender Confidence: {face_data['gender_confidence']}")  # Uncomment this line if you have gender confidence
         print(f"  Confidence: {face_data['confidence']}")
         print(f"  Mask saved as: {mask_filename}")
+
+        if not segmentation_success:
+            print(f"Segmentation failed for face {i + 1}")
 
     print("Processing complete!")
 
