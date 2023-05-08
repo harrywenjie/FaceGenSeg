@@ -1,45 +1,38 @@
 from fastapi import FastAPI, File, UploadFile
-from face_gender_detection import detect_faces_and_gender
-from face_segmentation import setup_bisenet, segment_face
-import cv2
-import numpy as np
+from fastapi.responses import JSONResponse
+import shutil
+import os
+#import uuid
+from main import main as process_image
 
 app = FastAPI()
 
-# Set up BiSeNet for face segmentation
-bisenet_model = setup_bisenet()
+@app.post("/process/")
+async def process_image_endpoint(file: UploadFile = File(...)):
+    try:
+        # Save the uploaded file to a temporary directory
+        temp_dir = "temp"
+        os.makedirs(temp_dir, exist_ok=True)
+        # unique_filename = f"{uuid.uuid4()}_{file.filename}"
+        # temp_file_path = os.path.join(temp_dir, unique_filename)
 
-@app.post("/process_image/")
-async def process_image(image: UploadFile = File(...)):
-    image_data = await image.read()
-    nparr = np.frombuffer(image_data, np.uint8)
-    input_image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        #uuid should be handled by up stream data
+        temp_file_path = os.path.join(temp_dir, file.filename)
 
-    # Detect faces and gender
-    face_gender_data = detect_faces_and_gender(input_image)
+        with open(temp_file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
 
-    results = []
+        # Process the image
+        process_image(temp_file_path)
 
-    for i, face_data in enumerate(face_gender_data):
-        bounding_box = face_data['bounding_box']
-        x, y, w, h = bounding_box
-        face_image = input_image[y:y+h, x:x+w]
+        # Remove the temporary file after processing
+        os.remove(temp_file_path)
 
-        # Segment face using BiSeNet
-        face_mask = segment_face(bisenet_model, face_image)
+        return JSONResponse(content={"status": "success", "message": "Image processed successfully."})
 
-        # Save face mask
-        mask_filename = f"face_mask_{i}.png"
-        cv2.imwrite(mask_filename, face_mask)
+    except Exception as e:
+        return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
 
-        # Print face and gender information
-        face_info = {
-            "face_id": i + 1,
-            "bounding_box": bounding_box,
-            "gender": face_data['gender'],
-            "mask_filename": mask_filename
-        }
-
-        results.append(face_info)
-
-    return {"results": results}
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

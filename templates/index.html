@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FaceGenSeg</title>
+  </head>
+  <body>
+    <h1>Welcome to FaceGenSeg</h1>
+    <p>This application performs face detection, gender detection, and face segmentation.</p>
+    <form action="/" method="post" enctype="multipart/form-data">
+      <input type="file" name="file" required>
+      <button type="submit">Upload</button>
+    </form>
+
+    {% if result_data %}
+    <h2>Results:</h2>
+    <ul>
+      {% for face_data in result_data %}
+      <li>
+        <p>Face {{ loop.index }}:</p>
+        <p>Gender: {{ face_data.gender }}</p>
+        <p>Confidence: {{ face_data.confidence }}</p>
+        <img src="{{ url_for('static', filename='output/' + face_data.mask_filename) }}" alt="Mask">
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </body>
+</html>

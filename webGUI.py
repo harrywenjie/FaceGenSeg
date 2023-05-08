@@ -1,40 +1,35 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for
 import os
-import main
+from main import main as process_image
 
 app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = "uploads"
+app.config["OUTPUT_FOLDER"] = "output"
 
-if not os.path.exists(app.config["UPLOAD_FOLDER"]):
-    os.makedirs(app.config["UPLOAD_FOLDER"])
-
+os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+os.makedirs(app.config["OUTPUT_FOLDER"], exist_ok=True)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
         if "file" not in request.files:
-            return "No file part"
+            return redirect(request.url)
 
         file = request.files["file"]
         if file.filename == "":
-            return "No selected file"
+            return redirect(request.url)
 
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], file.filename))
-        input_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
-        main.main(input_path)
-        return send_from_directory(app.config["UPLOAD_FOLDER"], "face_mask_0.png", as_attachment=True)
+        file_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+        file.save(file_path)
 
-    return """
-    <!doctype html>
-    <title>FaceGenSeg</title>
-    <h1>FaceGenSeg - Face detection, gender detection, and face segmentation</h1>
-    <p>Welcome to FaceGenSeg! Please upload an image to process.</p>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    """
+        result_data = process_image(file_path)
+
+        os.remove(file_path)
+
+        return render_template("index.html", result_data=result_data)
+
+    return render_template("index.html")
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=False)
