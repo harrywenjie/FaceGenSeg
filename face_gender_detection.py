@@ -15,9 +15,8 @@ def detect_faces_and_gender(image):
     for face in faces:
         bbox = face.bbox.astype(int).flatten()
         x1, y1, x2, y2 = bbox
-        bounding_box = (x1, y1, x2 - x1, y2 - y1)
-        
-        print(f"face.sex: {face.sex}")  # Print the actual value of face.sex
+        bounding_box = (x1, y1, x2 - x1, y2 - y1)       
+
 
         gender = "Male" if face.sex == "M" else "Female"
 
