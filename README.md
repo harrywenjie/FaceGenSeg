@@ -1,7 +1,8 @@
 # FaceGenSeg
 
-FaceGenSeg 是个整合了面部侦测，性别识别, 和面部遮罩的工具 
+FaceGenSeg 是个整合了面部侦测，性别识别, 和面部遮罩的工具  
 
+---
 ## 环境配置
 
 ### Windows（测试环境Windows 11）
@@ -39,8 +40,11 @@ FaceGenSeg 是个整合了面部侦测，性别识别, 和面部遮罩的工具
     ```bash
     bash setup.sh
     ```
+---  
+
 ## 使用
 
+### 注：Windows下可跳过以下步骤，用run.bat运行GUI版本, 然后访问 http://localhost:5500/ 
 
 1. ### 启动虚拟环境
     ### Windows
@@ -69,7 +73,7 @@ FaceGenSeg 是个整合了面部侦测，性别识别, 和面部遮罩的工具
     原文件名+_mask(遮罩成功)/_failed(遮罩失败)_f(女)/m(男)_面孔序列.jpg
     例：test001_mask_f_1.jpg
     ```
-    #### 比如用curl
+    #### 比如用curl发送
     ```bash
     curl -X POST -F "file=@$HOME/Downloads/test10.jpg" http://0.0.0.0:8800/process/
     ```
@@ -84,5 +88,4 @@ FaceGenSeg 是个整合了面部侦测，性别识别, 和面部遮罩的工具
     ```
     http://localhost:5500/
     ```
-
-    #### Windows下可用run.bat同时快捷运行API和GUI版本
+    
