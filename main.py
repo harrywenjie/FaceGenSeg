@@ -6,7 +6,7 @@ import argparse
 from face_gender_detection import detect_faces_and_gender
 from face_segmentation import setup_bisenet, segment_face_with_check
 
-
+filetype = 'jpg'  #use jpg or png
 
 def main(input_path):
     image = cv2.imread(input_path)
@@ -47,11 +47,11 @@ def main(input_path):
         # Save face mask with the specified format
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
         mask_status = "mask" if segmentation_success else "failed"
-        mask_filename = os.path.join(output_dir, f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.png")
+        mask_filename = os.path.join(output_dir, f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}")  # Use filetype variable
         cv2.imwrite(mask_filename, face_mask)
 
         # Add mask_filename to face_data
-        face_data['mask_fileurl'] = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.png"
+        face_data['mask_fileurl'] = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}"  # Use filetype variable
 
         # Print face and gender information
         print(f"Face {i + 1}:")
