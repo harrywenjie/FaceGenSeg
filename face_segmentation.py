@@ -31,6 +31,9 @@ def segment_face(net, input_image, face_image, bounding_box):
     # Create a binary mask with only face area (excluding hair)
     binary_mask = np.zeros_like(resized_parsing)
     face_classes = [1,2,3,4,5,6,7,8,9,10,11,12,13]  # Face-related classes
+
+    # 1-Face, 2-Left Eye Brow, 3-Right Eye Brow, 4-Left Eye, 5-Right Eye, 6-Glass, 7-l ear, 8-r ear, 9-ear ring, 10-nose, 11-teeth, 12-upper lip, 13-lower lip, 14-neck, 15-necklace, 16-Cloth, 17-Hair, 18-Hat
+
     for face_class in face_classes:
         binary_mask[resized_parsing == face_class] = 255
 
