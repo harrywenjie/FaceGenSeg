@@ -49,5 +49,22 @@ def segment_face(net, input_image, face_image, bounding_box):
 
     full_mask[y1:y2, x1:x2] = binary_mask[y1_binary:y2_binary, x1_binary:x2_binary]
 
-
     return full_mask
+
+def mask_percentage(full_mask, bounding_box):
+    x, y, w, h = bounding_box
+    cropped_mask = full_mask[y:y + h, x:x + w]
+    nonzero_pixels = np.count_nonzero(cropped_mask)
+    total_pixels = w * h
+    return (nonzero_pixels / total_pixels) * 100
+
+def segment_face_with_check(net, input_image, face_image, bounding_box, threshold=20):
+    full_mask = segment_face(net, input_image, face_image, bounding_box)
+    percentage = mask_percentage(full_mask, bounding_box)
+    if percentage >= threshold:
+        success = True
+    else:
+        success = False
+
+    return full_mask, success
+
