@@ -15,6 +15,9 @@ def main(input_path):
     # Detect faces and gender
     face_gender_data = detect_faces_and_gender(image)
 
+    # Sort face_gender_data by confidence value in descending order
+    face_gender_data.sort(key=lambda x: x['confidence'], reverse=True)
+
     # Set up BiSeNet for face segmentation
     bisenet_model = setup_bisenet()
 
@@ -41,7 +44,8 @@ def main(input_path):
 
         # Save face mask with the specified format
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
-        mask_filename = os.path.join(output_dir, f"{original_name}_mask_{gender_letter}_{i + 1}.png")
+        mask_status = "mask" if segmentation_success else "failed"
+        mask_filename = os.path.join(output_dir, f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.png")
         cv2.imwrite(mask_filename, face_mask)
 
         # Print face and gender information
@@ -51,9 +55,6 @@ def main(input_path):
         # print(f"  Gender Confidence: {face_data['gender_confidence']}")  # Uncomment this line if you have gender confidence
         print(f"  Confidence: {face_data['confidence']}")
         print(f"  Mask saved as: {mask_filename}")
-
-        if not segmentation_success:
-            print(f"Segmentation failed for face {i + 1}")
 
     print("Processing complete!")
 
