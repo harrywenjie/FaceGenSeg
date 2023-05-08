@@ -59,7 +59,7 @@ def mask_percentage(full_mask, bounding_box):
     return (nonzero_pixels / total_pixels) * 100
 
 #Set threshold for segmentation success or fail here, remember we have a boundingbox scale factor currently at 1.8 in main.py
-def segment_face_with_check(net, input_image, face_image, bounding_box, threshold=20):
+def segment_face_with_check(net, input_image, face_image, bounding_box, threshold=10):
     full_mask = segment_face(net, input_image, face_image, bounding_box)
     percentage = mask_percentage(full_mask, bounding_box)
     if percentage >= threshold:

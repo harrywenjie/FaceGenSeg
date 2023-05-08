@@ -21,7 +21,8 @@
         <p>Face {{ loop.index }}:</p>
         <p>Gender: {{ face_data.gender }}</p>
         <p>Confidence: {{ face_data.confidence }}</p>
-        <img src="{{ url_for('static', filename='output/' + face_data.mask_filename) }}" alt="Mask">
+        <p>Mask Name: {{ face_data.mask_fileurl }}</p>
+        <img src="{{ url_for('static', filename=face_data.mask_fileurl) }}" alt="Mask" height="200">
       </li>
       {% endfor %}
     </ul>

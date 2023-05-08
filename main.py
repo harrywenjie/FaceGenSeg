@@ -6,6 +6,8 @@ import argparse
 from face_gender_detection import detect_faces_and_gender
 from face_segmentation import setup_bisenet, segment_face_with_check
 
+
+
 def main(input_path):
     image = cv2.imread(input_path)
 
@@ -21,7 +23,7 @@ def main(input_path):
     # Set up BiSeNet for face segmentation
     bisenet_model = setup_bisenet()
 
-    output_dir = 'output'
+    output_dir = 'static'
     os.makedirs(output_dir, exist_ok=True)
 
     for i, face_data in enumerate(face_gender_data):
@@ -48,6 +50,9 @@ def main(input_path):
         mask_filename = os.path.join(output_dir, f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.png")
         cv2.imwrite(mask_filename, face_mask)
 
+        # Add mask_filename to face_data
+        face_data['mask_fileurl'] = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.png"
+
         # Print face and gender information
         print(f"Face {i + 1}:")
         print(f"  Bounding box: {bounding_box}")
@@ -57,6 +62,7 @@ def main(input_path):
         print(f"  Mask saved as: {mask_filename}")
 
     print("Processing complete!")
+    return face_gender_data
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="FaceGenSeg - Face detection, gender detection, and face segmentation")
