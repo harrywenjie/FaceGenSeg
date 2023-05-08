@@ -2,17 +2,17 @@
 torch==2.0.0+cu117
 --find-links https://download.pytorch.org/whl/torch_stable.html
 torchvision==0.15.0+cu117
-pillow
-numpy
-opencv-python
+Pillow==9.5.0
+numpy==1.24.3
+opencv-python==4.7.0.72
 tensorflow-gpu==2.8.0
-scikit-image
-tqdm
-fastapi
-uvicorn
+scikit-image==0.20.0
+tqdm==4.65.0
+fastapi==0.95.1
+uvicorn==0.22.0
 python-multipart
-matplotlib
+matplotlib==3.7.1
 Flask==2.1.1
-insightface
+insightface==0.7.3
 protobuf==3.20.2
 onnxruntime-gpu==1.14.1

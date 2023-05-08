@@ -23,6 +23,8 @@
         <p>Confidence: {{ face_data.confidence }}</p>
         <p>Mask Name: {{ face_data.mask_fileurl }}</p>
         <img src="{{ url_for('static', filename=face_data.mask_fileurl) }}" alt="Mask" height="200">
+        <br>
+        <a href="{{ url_for('static', filename=face_data.mask_fileurl) }}" download="{{ face_data.mask_fileurl }}">Download</a>
       </li>
       {% endfor %}
     </ul>
