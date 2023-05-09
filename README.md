@@ -27,7 +27,8 @@
     ### Windows下GPU加速（可选）
     
     ```
-    安装Cuda11.7，下载安装包按提示安装（需要注册Nvidia开发者账号），安装时选择自定义，只需要打第一个Cuda的勾，其它三项留空,
+    安装Cuda11.7，下载安装包按提示安装（需要注册Nvidia开发者账号），
+    安装时选择自定义，只需要打第一个Cuda的勾，其它三项留空,
     https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64
     ```
 
@@ -38,14 +39,16 @@
     2.下载cuDNN8.5.0.96
     https://developer.nvidia.com/rdp/cudnn-archive
     3.解压后把三个文件夹bin include lib复制到第1步我们建好的文件夹内
-    4.把路径‘C:\Program Files\NVIDIA\CUDNN\v8.x\’加入Windows系统变量'PATH'
+    4.把路径'C:\Program Files\NVIDIA\CUDNN\v8.x\bin'加入Windows系统变量'PATH'
     可以在管理员权限的命令终端输入 setx PATH "%PATH%;C:\Program Files\NVIDIA\CUDNN\v8.x\bin"
-    也可以在系统设置里手动添加"控制面板" > "系统" > "高级系统设置" > "环境变量" > "系统变量" > "PATH" > "新建" > "复制路径" > “确定”
+    也可以在系统设置里手动添加
+    "控制面板" > "系统" > "高级系统设置" > "环境变量" > "系统变量" > "PATH" > "新建" > 复制路径 > “确定”
     5.重启系统
     ```
 ### Linux (测试环境Ubuntu22.04)
 
-1. Nvidia显卡，驱动版本N社官方515(nvidia driver metapackage from nvidia-driver-515(proprietary))
+1. Nvidia显卡，驱动版本N社官方515  
+    (nvidia driver metapackage from nvidia-driver-515(proprietary))
     ```
     sudo apt install nvidia-driver-515
     sudo reboot
