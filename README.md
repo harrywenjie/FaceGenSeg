@@ -13,6 +13,17 @@
 
     https://www.python.org/downloads/windows/
 
+3. 复制或者下载本Repo并在目录下打开windows命令行,建立虚拟环境
+    ```
+    python -m venv venv
+    ```
+4. 启动虚拟环境并安装所需python组件
+    ```
+    call venv\Scripts\activate.bat
+    pip install -r requirements.txt
+    ```
+
+
     ### Windows下GPU加速（可选）
     
     ```
