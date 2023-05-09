@@ -2,7 +2,7 @@
 
 ### FaceGenSeg 是个整合了面部侦测，性别识别, 和面部遮罩的工具  
 
-### 注：Windows下可跳过以下步骤，用run.bat直接运行GUI版本, 然后访问 http://localhost:5500/ 该方法无GPU加速,仅使用CPU,测试用.
+### 注：Windows下可跳过以下步骤，只需要安装好python就可以用run.bat直接运行GUI版本, 然后访问 http://localhost:5500/ 该方法无GPU加速,仅使用CPU,测试用.
 ---
 ## 环境配置
 
