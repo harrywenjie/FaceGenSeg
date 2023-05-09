@@ -4,27 +4,92 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FaceGenSeg</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #222;
+        color:ivory;
+        font-family: 'Roboto', sans-serif;
+        margin-left: 50px;
+      }
+      h1 {
+        color:ivory;
+      }
+      .custom-file-input {
+        display: none;
+      }
+      .custom-file-label{
+        color:ivory;
+      }
+      .button {
+        display: inline-block;
+        cursor: pointer;
+        background-color: #555;
+        color:ivory;
+        padding: 0 50px;
+        line-height: 30px;
+        height: 30px;
+        font-size: 14px;
+        border: none; 
+      }
+      .button:link,
+      .button:visited {
+        color:ivory;
+        text-decoration: none;
+      }
+      .custom-file-label {
+        margin-right: 10px;
+      }
+      #fileName {
+        min-width: 150px;
+        display: inline-block;
+      }
+      hr {
+        border: none;
+        height: 1px;
+        color: ivory;
+        width: 430px;
+        background-color: ivory;
+        margin-right: auto;
+        margin-left: 0;
+      }
+    </style>
+      <script>
+        function updateFileName() {
+          const fileInput = document.getElementById('file');
+          const fileName = document.getElementById('fileName');
+          if (fileInput.files.length > 0) {
+            fileName.innerText = fileInput.files[0].name;
+          } else {
+            fileName.innerText = '';
+          }
+        }
+      </script>
   </head>
   <body>
-    <h1>Welcome to FaceGenSeg</h1>
-    <p>This application performs face detection, gender detection, and face segmentation.</p>
+    <h1>FaceGenSeg</h1>
+    <p>本程序是个整合了面部侦测,性别识别,和面部遮罩的工具.</p>
     <form action="/" method="post" enctype="multipart/form-data">
-      <input type="file" name="file" required>
-      <button type="submit">Upload</button>
+      <button type="button" class="button" onclick="document.getElementById('file').click()">浏览</button>
+      <span id="fileName" class="custom-file-label"></span>
+      <input type="file" name="file" id="file" class="custom-file-input" required onchange="updateFileName()" style="display: none;">
+      <button type="submit" class="button">上传</button>
     </form>
-
+    <br>
+    <hr>
     {% if result_data %}
-    <h2>Results:</h2>
+    <h2>运行结果:</h2>
     <ul>
       {% for face_data in result_data %}
       <li>
-        <p>Face {{ loop.index }}:</p>
-        <p>Gender: {{ face_data.gender }}</p>
-        <p>Confidence: {{ face_data.confidence }}</p>
-        <p>Mask Name: {{ face_data.mask_fileurl }}</p>
+        <p>脸 {{ loop.index }}:</p>
+        <p>性别: {{ face_data.gender }}</p>
+        <p>识别信心度: {{ face_data.confidence }}</p>
+        <p>遮罩文件名: {{ face_data.mask_fileurl }}</p>
         <img src="{{ url_for('static', filename=face_data.mask_fileurl) }}" alt="Mask" height="200">
         <br>
-        <a href="{{ url_for('static', filename=face_data.mask_fileurl) }}" download="{{ face_data.mask_fileurl }}">Download</a>
+        <br>
+        <a href="{{ url_for('static', filename=face_data.mask_fileurl) }}" download="{{ face_data.mask_fileurl }}" class="button">Download</a>
       </li>
       {% endfor %}
     </ul>

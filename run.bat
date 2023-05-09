@@ -1,23 +1,12 @@
 @echo off
 
+:: Create a virtual environment if it doesn't exist
 if not exist "venv" (
-  echo Virtual environment not found. Please run setup.bat first and then run this script.
-  pause
-  exit /b 1
+  python -m venv venv
 )
 
+:: Activate the virtual environment and install requirements
 call venv\Scripts\activate.bat
-if errorlevel 1 (
-  echo Error activating the virtual environment.Please run setup.bat first and try again.
-  pause
-  exit /b 1
-)
+pip install -r requirements.txt
 
-start cmd /k "python webAPI.py"
-start cmd /k "python webGUI.py"
-
-echo Both webAPI.py and webGUI.py are running. Close this window to stop them.
-pause
-
-:: Kill the processes when the command prompt is closed
-taskkill /IM python.exe /F
+python webGUI.py

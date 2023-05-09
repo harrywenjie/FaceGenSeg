@@ -30,10 +30,11 @@ def main(input_path):
         bounding_box = face_data['bounding_box']
         x, y, w, h = bounding_box
 
-        # Increase the size of the bounding box by a small factor
-        scale_factor = 1.8
-        new_w = int(w * scale_factor)
-        new_h = int(h * scale_factor)
+        # Increase the size of the bounding box by different factors for width and height
+        scale_factor_w = 1.4  # Scale factor for width
+        scale_factor_h = 1.8  # Scale factor for height
+        new_w = int(w * scale_factor_w)
+        new_h = int(h * scale_factor_h)
         new_x = max(0, x - (new_w - w) // 2)
         new_y = max(0, y - (new_h - h) // 2)
 
