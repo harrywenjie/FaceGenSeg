@@ -38,7 +38,9 @@ def segment_face(net, input_image, face_image, bounding_box, dilation_pixels=5):
     for face_class in face_classes:
         binary_mask[resized_parsing == face_class] = 255
 
-    # Add a dilation step here to expand the mask
+    binary_mask = binary_mask.astype(np.uint8)  # Ensure binary_mask is uint8
+
+    # Dilate the binary mask if dilation_pixels > 0
     if dilation_pixels > 0:
         kernel = np.ones((dilation_pixels, dilation_pixels), np.uint8)
         binary_mask = cv2.dilate(binary_mask, kernel, iterations=1)
@@ -56,6 +58,7 @@ def segment_face(net, input_image, face_image, bounding_box, dilation_pixels=5):
     full_mask[y1:y2, x1:x2] = binary_mask[y1_binary:y2_binary, x1_binary:x2_binary]
 
     return full_mask
+
 
 def mask_percentage(full_mask, bounding_box):
     x, y, w, h = bounding_box
