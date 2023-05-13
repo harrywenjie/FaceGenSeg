@@ -13,11 +13,15 @@
 
     https://www.python.org/downloads/windows/
 
-3. 复制或者下载本Repo并在目录下打开windows命令行,建立虚拟环境
+3. 安装Visual Studio Build Tool (测试版本2022)，  
+    如果已经安装了visual studio, 那么buildtool应该已经有了       
+    https://visualstudio.microsoft.com/downloads/
+
+4. 复制或者下载本Repo并在目录下打开windows命令行,建立虚拟环境
     ```
     python -m venv venv
     ```
-4. 启动虚拟环境并安装所需python组件
+5. 启动虚拟环境并安装所需python组件
     ```
     call venv\Scripts\activate.bat
     pip install -r requirements.txt

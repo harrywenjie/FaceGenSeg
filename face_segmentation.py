@@ -13,7 +13,8 @@ def setup_bisenet(pretrained_model_path='face_parsing_PyTorch/res/cp/79999_iter.
 
     return net
 
-def segment_face(net, input_image, face_image, bounding_box):
+#Add dilation pixels here,currently at 5
+def segment_face(net, input_image, face_image, bounding_box, dilation_pixels=5):
     to_tensor = transforms.Compose([
         transforms.Resize((512, 512)),
         transforms.ToTensor(),
@@ -36,6 +37,11 @@ def segment_face(net, input_image, face_image, bounding_box):
 
     for face_class in face_classes:
         binary_mask[resized_parsing == face_class] = 255
+
+    # Add a dilation step here to expand the mask
+    if dilation_pixels > 0:
+        kernel = np.ones((dilation_pixels, dilation_pixels), np.uint8)
+        binary_mask = cv2.dilate(binary_mask, kernel, iterations=1)
 
     # Create an empty mask with the same size as the input image
     full_mask = np.zeros((input_image.shape[0], input_image.shape[1]), dtype=np.uint8)
