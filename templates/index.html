@@ -89,18 +89,7 @@
         <p>BiSeNet遮罩文件名: {{ face_data.mask_fileurl }}</p>
         <img src="{{ url_for('static', filename=face_data.mask_fileurl) }}" alt="BiSeNet Mask" height="200">
         <br>
-        <a href="{{ url_for('static', filename=face_data.mask_fileurl) }}" download="{{ face_data.mask_fileurl }}" class="button">Download BiSeNet Mask</a>
-        
-        <br>
-        <br>
-        
-        <p>边框遮罩文件名: {{ face_data.bbox_mask_fileurl }}</p>
-        <img src="{{ url_for('static', filename=face_data.bbox_mask_fileurl) }}" alt="Bounding Box Mask" height="200">
-        <br>
-        <a href="{{ url_for('static', filename=face_data.bbox_mask_fileurl) }}" download="{{ face_data.bbox_mask_fileurl }}" class="button">Download Bounding Box Mask</a>
-        
-        <br>
-        <br>
+        <a href="{{ url_for('static', filename=face_data.mask_fileurl) }}" download="{{ face_data.mask_fileurl }}" class="button">Download</a>       
 
       </li>
       {% endfor %}

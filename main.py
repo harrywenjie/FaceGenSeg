@@ -52,26 +52,16 @@ def main(input_path):
         mask_filename = os.path.join(output_dir, f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}")  # Use filetype variable
         cv2.imwrite(mask_filename, face_mask)
 
-        # Create bounding box mask
-        bbox_mask = np.zeros_like(image)
-        bbox_mask[new_y:new_y+new_h, new_x:new_x+new_w] = 255  # fill the bounding box area with white
-
-        # Save bounding box mask
-        bbox_mask_filename = os.path.join(output_dir, f"{original_name}_box_{gender_letter}_{i + 1}.{filetype}")
-        cv2.imwrite(bbox_mask_filename, bbox_mask)
 
         # Add mask_filename and bbox_mask_filename to face_data
         face_data['mask_fileurl'] = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}"  # Use filetype variable
-        face_data['bbox_mask_fileurl'] = f"{original_name}_box_{gender_letter}_{i + 1}.{filetype}"
 
         # Print face and gender information
         print(f"Face {i + 1}:")
         print(f"  Bounding box: {bounding_box}")
         print(f"  Gender: {face_data['gender']}")
-        # print(f"  Gender Confidence: {face_data['gender_confidence']}")  # Uncomment this line if you have gender confidence
         print(f"  Confidence: {face_data['confidence']}")
         print(f"  Mask saved as: {mask_filename}")
-        print(f"  Bounding box mask saved as: {bbox_mask_filename}")
 
     print("Processing complete!")
     return face_gender_data
