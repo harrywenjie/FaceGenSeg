@@ -7,6 +7,6 @@ if not exist "venv" (
 
 :: Activate the virtual environment and install requirements
 call venv\Scripts\activate.bat
-pip install -r requirements.txt
+pip install --use-pep517 -r requirements.txt
 
 python webGUI.py
