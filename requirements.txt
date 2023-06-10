@@ -1,7 +1,7 @@
 --find-links https://download.pytorch.org/whl/torch_stable.html
-torch==2.0.0+cu118
+torch==2.0.0+cu117
 --find-links https://download.pytorch.org/whl/torch_stable.html
-torchvision==0.15.0+cu118
+torchvision==0.15.0+cu117
 Pillow==9.5.0
 numpy==1.24.3
 opencv-python==4.7.0.72
