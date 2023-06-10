@@ -31,7 +31,7 @@
     ### Windows下GPU加速（可选）
     
     ```
-    安装Cuda11.7，下载安装包按提示安装（需要注册Nvidia开发者账号），
+    安装Cuda11.7 （更新: Cuda11.8也可以），下载安装包按提示安装（需要注册Nvidia开发者账号），
     安装时选择自定义，只需要打第一个Cuda的勾，其它三项留空,
     https://developer.nvidia.com/cuda-11-7-0-download-archive?target_os=Windows&target_arch=x86_64
     ```
@@ -40,7 +40,7 @@
     安装cuDNN
     1.自建文件夹到以下路经，中间没有的文件夹也自己建
     C:\Program Files\NVIDIA\CUDNN\v8.x\
-    2.下载cuDNN8.5.0.96
+    2.下载cuDNN8.5.0.96 (更新: cudnn-windows-x86_64-8.6.0.163貌似也行)
     https://developer.nvidia.com/rdp/cudnn-archive
     3.解压后把三个文件夹bin include lib复制到第1步我们建好的文件夹内
     4.把路径'C:\Program Files\NVIDIA\CUDNN\v8.x\bin'加入Windows系统变量'PATH'
@@ -83,7 +83,7 @@
     ```
     ### Linux下GPU加速（可选）
     ```
-    //====安装cuda 11.7====
+    //====安装cuda 11.7==== (更新: 11.8也可以)
     wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
     sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
     wget https://developer.download.nvidia.com/compute/cuda/11.7.0/local_installers/cuda-repo-ubuntu2204-11-7-local_11.7.0-515.43.04-1_amd64.debnv
@@ -107,7 +107,7 @@
     nvcc --version
     ```
     ```    
-    //====安装cuDNN 8.5.0.96====
+    //====安装cuDNN 8.5.0.96====（更新: 8.6也可以）
     //下载地址
     https://developer.nvidia.com/rdp/cudnn-archive
     //需要N社开发者账号
