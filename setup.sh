@@ -19,7 +19,7 @@ if [ ! -d "venv" ]; then
 fi
 
 source venv/bin/activate
-pip install -r requirements.txt
+pip install --use-pep517 -r requirements.txt
 
 if [ $? -eq 0 ]; then
   echo "Installation completed successfully!"
