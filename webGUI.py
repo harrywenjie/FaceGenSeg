@@ -23,7 +23,7 @@ def index():
         face_classes = request.form.getlist('face_classes')
         exclude_classes = request.form.getlist('exclude_classes')
         add_original_mask = 'add_original_mask' in request.form
-        threshold = int(request.form.get('threshold', 10))
+        threshold = float(request.form.get('threshold', 10))
 
         # Convert to integers
         face_classes = [int(face_class) for face_class in face_classes]
