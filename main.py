@@ -1,3 +1,5 @@
+##main.py
+
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 import tensorflow as tf
@@ -9,7 +11,7 @@ from face_segmentation import setup_bisenet, segment_face_with_check
 
 filetype = 'jpg'  #use jpg or png
 
-def main(input_path):
+def main(input_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask):
     image = cv2.imread(input_path)
 
     # Extract original file name without extension
@@ -44,7 +46,7 @@ def main(input_path):
         face_image = image[new_y:new_y+new_h, new_x:new_x+new_w]
 
         # Segment face using BiSeNet
-        face_mask, segmentation_success = segment_face_with_check(bisenet_model, image, face_image, new_bounding_box)
+        face_mask, segmentation_success = segment_face_with_check(bisenet_model, image, face_image, new_bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask)
 
         # Save face mask with the specified format
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')

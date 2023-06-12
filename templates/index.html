@@ -64,17 +64,174 @@
             fileName.innerText = '';
           }
         }
+
+        // Function to save dilation_pixels, feather_amount, and checkbox values to local storage when form is submitted
+        function saveValues() {
+          const dilationPixelsInput = document.getElementById('dilation_pixels');
+          const featherAmountInput = document.getElementById('feather_amount');
+          localStorage.setItem('dilation_pixels', dilationPixelsInput.value);
+          localStorage.setItem('feather_amount', featherAmountInput.value);
+
+          // Save checkbox values
+          const faceClassesCheckboxes = document.querySelectorAll('input[name="face_classes"]');
+          const excludeClassesCheckboxes = document.querySelectorAll('input[name="exclude_classes"]');
+          let faceClassesValues = [];
+          let excludeClassesValues = [];
+          faceClassesCheckboxes.forEach((checkbox) => {
+            faceClassesValues.push(checkbox.checked);
+          });
+          excludeClassesCheckboxes.forEach((checkbox) => {
+            excludeClassesValues.push(checkbox.checked);
+          });
+          localStorage.setItem('face_classes', JSON.stringify(faceClassesValues));
+          localStorage.setItem('exclude_classes', JSON.stringify(excludeClassesValues));
+
+          const addOriginalMaskCheckbox = document.getElementById('add_original_mask');
+          localStorage.setItem('add_original_mask', addOriginalMaskCheckbox.checked);
+        }
+
+        // Function to set dilation_pixels, feather_amount, and checkbox values from local storage when page loads
+        function setValues() {
+          const dilationPixelsInput = document.getElementById('dilation_pixels');
+          const featherAmountInput = document.getElementById('feather_amount');
+          const storedDilationPixels = localStorage.getItem('dilation_pixels');
+          const storedFeatherAmount = localStorage.getItem('feather_amount');
+          dilationPixelsInput.value = storedDilationPixels ? storedDilationPixels : 5;
+          featherAmountInput.value = storedFeatherAmount ? storedFeatherAmount : 5;
+
+          // Set checkbox values
+          const faceClassesCheckboxes = document.querySelectorAll('input[name="face_classes"]');
+          const excludeClassesCheckboxes = document.querySelectorAll('input[name="exclude_classes"]');
+          let storedFaceClassesValues = JSON.parse(localStorage.getItem('face_classes'));
+          let storedExcludeClassesValues = JSON.parse(localStorage.getItem('exclude_classes'));
+          if (storedFaceClassesValues) {
+            faceClassesCheckboxes.forEach((checkbox, index) => {
+              checkbox.checked = storedFaceClassesValues[index];
+            });
+          } else {
+            // Set default values
+            [1,2,3,4,5,6,10,11,12,13].forEach((value) => {
+              document.getElementById('face_class_' + value).checked = true;
+            });
+          }
+          if (storedExcludeClassesValues) {
+            excludeClassesCheckboxes.forEach((checkbox, index) => {
+              checkbox.checked = storedExcludeClassesValues[index];
+            });
+          } else {
+            // Set default values
+            [7,8,9,17].forEach((value) => {
+              document.getElementById('exclude_class_' + value).checked = true;
+            });
+          }
+
+          //Set original mask bool
+          const addOriginalMaskCheckbox = document.getElementById('add_original_mask');
+          const storedAddOriginalMask = localStorage.getItem('add_original_mask');
+          addOriginalMaskCheckbox.checked = storedAddOriginalMask !== null ? storedAddOriginalMask === 'true' : true;
+        }
+
+        // Call setValues when page loads
+        window.onload = setValues;
       </script>
   </head>
   <body>
     <h1>FaceGenSeg</h1>
     <p>本程序是个整合了面部侦测,性别识别,和面部遮罩的工具.</p>
-    <form action="/" method="post" enctype="multipart/form-data">
+    <form action="/" method="post" enctype="multipart/form-data" onsubmit="saveValues()">  <!-- Added onsubmit attribute -->
+      <h3>遮罩和羽化部分</h3>
+      <input type="checkbox" id="face_class_1" name="face_classes" value="1">
+      <label for="face_class_1">脸</label>
+      <input type="checkbox" id="face_class_2" name="face_classes" value="2">
+      <label for="face_class_2">左眉</label>
+      <input type="checkbox" id="face_class_3" name="face_classes" value="3">
+      <label for="face_class_3">右眉</label>
+      <input type="checkbox" id="face_class_4" name="face_classes" value="4">
+      <label for="face_class_4">左眼</label>
+      <input type="checkbox" id="face_class_5" name="face_classes" value="5">
+      <label for="face_class_5">右眼</label>
+      <input type="checkbox" id="face_class_6" name="face_classes" value="6">
+      <label for="face_class_6">眼镜</label><br>
+      <input type="checkbox" id="face_class_7" name="face_classes" value="7">
+      <label for="face_class_7">左耳</label>
+      <input type="checkbox" id="face_class_8" name="face_classes" value="8">
+      <label for="face_class_8">右耳</label>
+      <input type="checkbox" id="face_class_9" name="face_classes" value="9">
+      <label for="face_class_9">耳环</label>
+      <input type="checkbox" id="face_class_10" name="face_classes" value="10">
+      <label for="face_class_10">鼻子</label>
+      <input type="checkbox" id="face_class_11" name="face_classes" value="11">
+      <label for="face_class_11">牙</label>
+      <input type="checkbox" id="face_class_12" name="face_classes" value="12">
+      <label for="face_class_12">上唇</label>
+      <input type="checkbox" id="face_class_13" name="face_classes" value="13">
+      <label for="face_class_13">下唇</label><br>
+      <input type="checkbox" id="face_class_14" name="face_classes" value="14">
+      <label for="face_class_14">脖子</label>
+      <input type="checkbox" id="face_class_15" name="face_classes" value="15">
+      <label for="face_class_15">项链</label>
+      <input type="checkbox" id="face_class_16" name="face_classes" value="16">
+      <label for="face_class_16">衣服</label>
+      <input type="checkbox" id="face_class_17" name="face_classes" value="17">
+      <label for="face_class_17">头发</label>
+      <input type="checkbox" id="face_class_18" name="face_classes" value="18">
+      <label for="face_class_18">帽子</label><br>
+      <br>
+      <h3>重新扣除的部分</h3>
+      <input type="checkbox" id="exclude_class_1" name="exclude_classes" value="1">
+      <label for="exclude_class_1">脸</label>
+      <input type="checkbox" id="exclude_class_2" name="exclude_classes" value="2">
+      <label for="exclude_class_2">左眉</label>
+      <input type="checkbox" id="exclude_class_3" name="exclude_classes" value="3">
+      <label for="exclude_class_3">右眉</label>
+      <input type="checkbox" id="exclude_class_4" name="exclude_classes" value="4">
+      <label for="exclude_class_4">左眼</label>
+      <input type="checkbox" id="exclude_class_5" name="exclude_classes" value="5">
+      <label for="exclude_class_5">右眼</label>
+      <input type="checkbox" id="exclude_class_6" name="exclude_classes" value="6">
+      <label for="exclude_class_6">眼镜</label><br>
+      <input type="checkbox" id="exclude_class_7" name="exclude_classes" value="7">
+      <label for="exclude_class_7">左耳</label>
+      <input type="checkbox" id="exclude_class_8" name="exclude_classes" value="8">
+      <label for="exclude_class_8">右耳</label>
+      <input type="checkbox" id="exclude_class_9" name="exclude_classes" value="9">
+      <label for="exclude_class_9">耳环</label>
+      <input type="checkbox" id="exclude_class_10" name="exclude_classes" value="10">
+      <label for="exclude_class_10">鼻子</label>
+      <input type="checkbox" id="exclude_class_11" name="exclude_classes" value="11">
+      <label for="exclude_class_11">牙</label>
+      <input type="checkbox" id="exclude_class_12" name="exclude_classes" value="12">
+      <label for="exclude_class_12">上唇</label>
+      <input type="checkbox" id="exclude_class_13" name="exclude_classes" value="13">
+      <label for="exclude_class_13">下唇</label><br>
+      <input type="checkbox" id="exclude_class_14" name="exclude_classes" value="14">
+      <label for="exclude_class_14">脖子</label>
+      <input type="checkbox" id="exclude_class_15" name="exclude_classes" value="15">
+      <label for="exclude_class_15">项链</label>
+      <input type="checkbox" id="exclude_class_16" name="exclude_classes" value="16">
+      <label for="exclude_class_16">衣服</label>
+      <input type="checkbox" id="exclude_class_17" name="exclude_classes" value="17">
+      <label for="exclude_class_17">头发</label>
+      <input type="checkbox" id="exclude_class_18" name="exclude_classes" value="18">
+      <label for="exclude_class_18">帽子</label><br>
+      <br>
+      <p>这里的像素都是扩张算法用到的矩阵大小. <br>这并不是指各个方向拓展的精确像素值. <br>这是由于遮罩形状本身不规则决定的,具体效果需要实验.</p>
+      <br>
+      <label for="dilation_pixels">像素扩张</label>
+      <input type="number" name="dilation_pixels" id="dilation_pixels" placeholder="Dilation Pixels" step="1">
+      <label for="feather_amount">羽化像素</label>
+      <input type="number" name="feather_amount" id="feather_amount" placeholder="Feather Amount" step="1">
+      <br>
+      <br>
+      <label for="add_original_mask">羽化保留原遮罩</label>      
+      <input type="checkbox" id="add_original_mask" name="add_original_mask">
+      <br>
+      <br>
       <button type="button" class="button" onclick="document.getElementById('file').click()">浏览</button>
       <span id="fileName" class="custom-file-label"></span>
       <input type="file" name="file" id="file" class="custom-file-input" required onchange="updateFileName()" style="display: none;">
       <button type="submit" class="button">上传</button>
-    </form>
+    </form>      
     <br>
     <hr>
     {% if result_data %}
