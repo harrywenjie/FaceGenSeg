@@ -85,20 +85,22 @@ def segment_face(net, input_image, face_image, bounding_box, dilation_pixels=5, 
 
     return full_mask
 
-def mask_percentage(full_mask, bounding_box):
+#This is the percentage between the mask and the bounding box, not between the mask and the entire image.
+def mask_percentage(full_mask, bounding_box, input_image):
     x, y, w, h = bounding_box
     cropped_mask = full_mask[y:y + h, x:x + w]
     nonzero_pixels = np.count_nonzero(cropped_mask)
-    total_pixels = w * h
-    return (nonzero_pixels / total_pixels) * 100
+    box_pixels = w * h
+    image_pixels = input_image.shape[0] * input_image.shape[1]
+    return (nonzero_pixels / box_pixels) * 100, nonzero_pixels, box_pixels, image_pixels
 
 #Set threshold for segmentation success or fail here, remember we have a boundingbox scale factor currently at 1.4W 1.5H in main.py
 def segment_face_with_check(net, input_image, face_image, bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold=10):
     full_mask = segment_face(net, input_image, face_image, bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask)
-    percentage = mask_percentage(full_mask, bounding_box)
+    percentage, nonzero_pixels, box_pixels, image_pixels = mask_percentage(full_mask, bounding_box, input_image)
     if percentage >= threshold:
         success = True
     else:
         success = False
 
-    return full_mask, success
+    return full_mask, success, nonzero_pixels, box_pixels, image_pixels, percentage

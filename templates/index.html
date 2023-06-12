@@ -88,6 +88,10 @@
 
           const addOriginalMaskCheckbox = document.getElementById('add_original_mask');
           localStorage.setItem('add_original_mask', addOriginalMaskCheckbox.checked);
+
+          // Save threshold
+          const thresholdInput = document.getElementById('threshold');
+          localStorage.setItem('threshold', thresholdInput.value);
         }
 
         // Function to set dilation_pixels, feather_amount, and checkbox values from local storage when page loads
@@ -129,6 +133,11 @@
           const addOriginalMaskCheckbox = document.getElementById('add_original_mask');
           const storedAddOriginalMask = localStorage.getItem('add_original_mask');
           addOriginalMaskCheckbox.checked = storedAddOriginalMask !== null ? storedAddOriginalMask === 'true' : true;
+
+          // Set threshold
+          const thresholdInput = document.getElementById('threshold');
+          const storedThreshold = localStorage.getItem('threshold');
+          thresholdInput.value = storedThreshold ? storedThreshold : 10;
         }
 
         // Call setValues when page loads
@@ -227,6 +236,9 @@
       <input type="checkbox" id="add_original_mask" name="add_original_mask">
       <br>
       <br>
+      <label for="threshold">临界值</label>
+      <input type="number" name="threshold" id="threshold" placeholder="threshold" step="1">
+      <p>(当有效百分比低于临界值时,文件名中的mask会变成failed,相当于传参给后续的程序)</p>
       <button type="button" class="button" onclick="document.getElementById('file').click()">浏览</button>
       <span id="fileName" class="custom-file-label"></span>
       <input type="file" name="file" id="file" class="custom-file-input" required onchange="updateFileName()" style="display: none;">
@@ -242,7 +254,10 @@
         <p>脸 {{ loop.index }}:</p>
         <p>性别: {{ face_data.gender }}</p>
         <p>识别信心度: {{ face_data.confidence }}</p>
-
+        <p>遮罩像素: {{ face_data.nonzero_pixels }}</p>        
+        <p>识别框像素: {{ face_data.box_pixels }}</p>
+        <p>有效百分比(遮罩占识别框的比): {{ face_data.percentage }}</p>
+        <p>图片总像素: {{ face_data.image_pixels }}</p>      
         <p>BiSeNet遮罩文件名: {{ face_data.mask_fileurl }}</p>
         <img src="{{ url_for('static', filename=face_data.mask_fileurl) }}" alt="BiSeNet Mask" height="200">
         <br>

@@ -11,7 +11,7 @@ from face_segmentation import setup_bisenet, segment_face_with_check
 
 filetype = 'jpg'  #use jpg or png
 
-def main(input_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask):
+def main(input_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold):
     image = cv2.imread(input_path)
 
     # Extract original file name without extension
@@ -46,7 +46,9 @@ def main(input_path, dilation_pixels, feather_amount, face_classes, exclude_clas
         face_image = image[new_y:new_y+new_h, new_x:new_x+new_w]
 
         # Segment face using BiSeNet
-        face_mask, segmentation_success = segment_face_with_check(bisenet_model, image, face_image, new_bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask)
+        face_mask, segmentation_success, nonzero_pixels, box_pixels, image_pixels, percentage = segment_face_with_check(
+            bisenet_model, image, face_image, new_bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold
+        )
 
         # Save face mask with the specified format
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
@@ -55,8 +57,12 @@ def main(input_path, dilation_pixels, feather_amount, face_classes, exclude_clas
         cv2.imwrite(mask_filename, face_mask)
 
 
-        # Add mask_filename and bbox_mask_filename to face_data
+        # Add mask_filename, bbox_mask_filename, and pixel data to face_data
         face_data['mask_fileurl'] = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}"  # Use filetype variable
+        face_data['nonzero_pixels'] = nonzero_pixels
+        face_data['box_pixels'] = box_pixels
+        face_data['image_pixels'] = image_pixels
+        face_data['percentage'] = percentage
 
         # Print face and gender information
         print(f"Face {i + 1}:")
