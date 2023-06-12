@@ -24,8 +24,16 @@ async def process_image_endpoint(file: UploadFile = File(...)):
         with open(temp_file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
 
+        # API版本直接在这里改参数，省事
+        dilation_pixels = 5
+        feather_amount = 5
+        face_classes = [1,2,3,4,5,6,10,11,12,13]
+        exclude_classes = [7,8,9,17]
+        add_original_mask = True
+        threshold = 10
+
         # Process the image
-        process_image(temp_file_path)
+        process_image(temp_file_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold)
 
         # Remove the temporary file after processing
         os.remove(temp_file_path)
