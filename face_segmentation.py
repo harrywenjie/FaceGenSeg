@@ -62,7 +62,8 @@ def segment_face(net, input_image, face_image, bounding_box, dilation_pixels=5, 
     feather_amount = int(math.ceil((feather_amount * 10) / 2.) * 2 - 1)
 
     # Apply a blur to the binary mask to create a feathering effect
-    binary_mask = cv2.GaussianBlur(binary_mask, (feather_amount, feather_amount), 0)
+    if feather_amount > 0:
+        binary_mask = cv2.GaussianBlur(binary_mask, (feather_amount, feather_amount), 0)
 
     # Add the original mask back to the blurred mask
     if add_original_mask:
