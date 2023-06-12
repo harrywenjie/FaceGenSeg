@@ -145,127 +145,134 @@
       </script>
   </head>
   <body>
-    <h1>FaceGenSeg</h1>
-    <p>本程序是个整合了面部侦测,性别识别,和面部遮罩的工具.</p>
-    <form action="/" method="post" enctype="multipart/form-data" onsubmit="saveValues()">  <!-- Added onsubmit attribute -->
-      <h3>遮罩和羽化部分</h3>
-      <input type="checkbox" id="face_class_1" name="face_classes" value="1">
-      <label for="face_class_1">脸</label>
-      <input type="checkbox" id="face_class_2" name="face_classes" value="2">
-      <label for="face_class_2">左眉</label>
-      <input type="checkbox" id="face_class_3" name="face_classes" value="3">
-      <label for="face_class_3">右眉</label>
-      <input type="checkbox" id="face_class_4" name="face_classes" value="4">
-      <label for="face_class_4">左眼</label>
-      <input type="checkbox" id="face_class_5" name="face_classes" value="5">
-      <label for="face_class_5">右眼</label>
-      <input type="checkbox" id="face_class_6" name="face_classes" value="6">
-      <label for="face_class_6">眼镜</label><br>
-      <input type="checkbox" id="face_class_7" name="face_classes" value="7">
-      <label for="face_class_7">左耳</label>
-      <input type="checkbox" id="face_class_8" name="face_classes" value="8">
-      <label for="face_class_8">右耳</label>
-      <input type="checkbox" id="face_class_9" name="face_classes" value="9">
-      <label for="face_class_9">耳环</label>
-      <input type="checkbox" id="face_class_10" name="face_classes" value="10">
-      <label for="face_class_10">鼻子</label>
-      <input type="checkbox" id="face_class_11" name="face_classes" value="11">
-      <label for="face_class_11">牙</label>
-      <input type="checkbox" id="face_class_12" name="face_classes" value="12">
-      <label for="face_class_12">上唇</label>
-      <input type="checkbox" id="face_class_13" name="face_classes" value="13">
-      <label for="face_class_13">下唇</label><br>
-      <input type="checkbox" id="face_class_14" name="face_classes" value="14">
-      <label for="face_class_14">脖子</label>
-      <input type="checkbox" id="face_class_15" name="face_classes" value="15">
-      <label for="face_class_15">项链</label>
-      <input type="checkbox" id="face_class_16" name="face_classes" value="16">
-      <label for="face_class_16">衣服</label>
-      <input type="checkbox" id="face_class_17" name="face_classes" value="17">
-      <label for="face_class_17">头发</label>
-      <input type="checkbox" id="face_class_18" name="face_classes" value="18">
-      <label for="face_class_18">帽子</label><br>
-      <br>
-      <h3>重新扣除的部分</h3>
-      <input type="checkbox" id="exclude_class_1" name="exclude_classes" value="1">
-      <label for="exclude_class_1">脸</label>
-      <input type="checkbox" id="exclude_class_2" name="exclude_classes" value="2">
-      <label for="exclude_class_2">左眉</label>
-      <input type="checkbox" id="exclude_class_3" name="exclude_classes" value="3">
-      <label for="exclude_class_3">右眉</label>
-      <input type="checkbox" id="exclude_class_4" name="exclude_classes" value="4">
-      <label for="exclude_class_4">左眼</label>
-      <input type="checkbox" id="exclude_class_5" name="exclude_classes" value="5">
-      <label for="exclude_class_5">右眼</label>
-      <input type="checkbox" id="exclude_class_6" name="exclude_classes" value="6">
-      <label for="exclude_class_6">眼镜</label><br>
-      <input type="checkbox" id="exclude_class_7" name="exclude_classes" value="7">
-      <label for="exclude_class_7">左耳</label>
-      <input type="checkbox" id="exclude_class_8" name="exclude_classes" value="8">
-      <label for="exclude_class_8">右耳</label>
-      <input type="checkbox" id="exclude_class_9" name="exclude_classes" value="9">
-      <label for="exclude_class_9">耳环</label>
-      <input type="checkbox" id="exclude_class_10" name="exclude_classes" value="10">
-      <label for="exclude_class_10">鼻子</label>
-      <input type="checkbox" id="exclude_class_11" name="exclude_classes" value="11">
-      <label for="exclude_class_11">牙</label>
-      <input type="checkbox" id="exclude_class_12" name="exclude_classes" value="12">
-      <label for="exclude_class_12">上唇</label>
-      <input type="checkbox" id="exclude_class_13" name="exclude_classes" value="13">
-      <label for="exclude_class_13">下唇</label><br>
-      <input type="checkbox" id="exclude_class_14" name="exclude_classes" value="14">
-      <label for="exclude_class_14">脖子</label>
-      <input type="checkbox" id="exclude_class_15" name="exclude_classes" value="15">
-      <label for="exclude_class_15">项链</label>
-      <input type="checkbox" id="exclude_class_16" name="exclude_classes" value="16">
-      <label for="exclude_class_16">衣服</label>
-      <input type="checkbox" id="exclude_class_17" name="exclude_classes" value="17">
-      <label for="exclude_class_17">头发</label>
-      <input type="checkbox" id="exclude_class_18" name="exclude_classes" value="18">
-      <label for="exclude_class_18">帽子</label><br>
-      <br>
-      <p>这里的像素都是扩张算法用到的矩阵大小. <br>这并不是指各个方向拓展的精确像素值. <br>这是由于遮罩形状本身不规则决定的,具体效果需要实验.</p>
-      <br>
-      <label for="dilation_pixels">像素扩张</label>
-      <input type="number" name="dilation_pixels" id="dilation_pixels" placeholder="Dilation Pixels" step="1">
-      <label for="feather_amount">羽化像素</label>
-      <input type="number" name="feather_amount" id="feather_amount" placeholder="Feather Amount" step="1">
-      <br>
-      <br>
-      <label for="add_original_mask">羽化保留原遮罩</label>      
-      <input type="checkbox" id="add_original_mask" name="add_original_mask">
-      <br>
-      <br>
-      <label for="threshold">临界值</label>
-      <input type="number" name="threshold" id="threshold" placeholder="threshold" step="0.01">
-      <p>(当有效百分比低于临界值时,文件名中的mask会变成failed,相当于传参给后续的程序)</p>
-      <button type="button" class="button" onclick="document.getElementById('file').click()">选择</button>
-      <span id="fileName" class="custom-file-label"></span>
-      <input type="file" name="file" id="file" class="custom-file-input" required onchange="updateFileName()" style="display: none;">
-      <button type="submit" class="button">计算</button>
-    </form>      
-    <br>
-    <hr>
-    {% if result_data %}
-    <h2>运行结果:</h2>
-    <ul>
-      {% for face_data in result_data %}
-      <li>
-        <p>脸 {{ loop.index }}:</p>
-        <p>性别: {{ face_data.gender }}</p>
-        <p>识别信心度: {{ face_data.confidence }}</p>
-        <p>遮罩像素: {{ face_data.nonzero_pixels }}</p>        
-        <p>识别框像素: {{ face_data.box_pixels }}</p>
-        <p>有效百分比(遮罩占识别框的比): {{ face_data.percentage }}</p>
-        <p>图片总像素: {{ face_data.image_pixels }}</p>      
-        <p>BiSeNet遮罩文件名: {{ face_data.mask_fileurl }}</p>
-        <img src="{{ url_for('static', filename=face_data.mask_fileurl) }}" alt="BiSeNet Mask" height="200">
-        <br>
-        <a href="{{ url_for('static', filename=face_data.mask_fileurl) }}" download="{{ face_data.mask_fileurl }}" class="button">Download</a>       
-
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+    <div style="display: flex; justify-content: space-between;">
+      <div style="width: 45%;">
+        <h1>FaceGenSeg</h1>
+        <p>本程序是个整合了面部侦测,性别识别,和面部遮罩的工具.</p>    
+        <hr>
+        <form action="/" method="post" enctype="multipart/form-data" onsubmit="saveValues()">  <!-- Added onsubmit attribute -->
+          <h3>遮罩和羽化部分</h3>
+          <input type="checkbox" id="face_class_1" name="face_classes" value="1">
+          <label for="face_class_1">脸</label>
+          <input type="checkbox" id="face_class_2" name="face_classes" value="2">
+          <label for="face_class_2">左眉</label>
+          <input type="checkbox" id="face_class_3" name="face_classes" value="3">
+          <label for="face_class_3">右眉</label>
+          <input type="checkbox" id="face_class_4" name="face_classes" value="4">
+          <label for="face_class_4">左眼</label>
+          <input type="checkbox" id="face_class_5" name="face_classes" value="5">
+          <label for="face_class_5">右眼</label>
+          <input type="checkbox" id="face_class_6" name="face_classes" value="6">
+          <label for="face_class_6">眼镜</label><br>
+          <input type="checkbox" id="face_class_7" name="face_classes" value="7">
+          <label for="face_class_7">左耳</label>
+          <input type="checkbox" id="face_class_8" name="face_classes" value="8">
+          <label for="face_class_8">右耳</label>
+          <input type="checkbox" id="face_class_9" name="face_classes" value="9">
+          <label for="face_class_9">耳环</label>
+          <input type="checkbox" id="face_class_10" name="face_classes" value="10">
+          <label for="face_class_10">鼻子</label>
+          <input type="checkbox" id="face_class_11" name="face_classes" value="11">
+          <label for="face_class_11">牙</label>
+          <input type="checkbox" id="face_class_12" name="face_classes" value="12">
+          <label for="face_class_12">上唇</label>
+          <input type="checkbox" id="face_class_13" name="face_classes" value="13">
+          <label for="face_class_13">下唇</label><br>
+          <input type="checkbox" id="face_class_14" name="face_classes" value="14">
+          <label for="face_class_14">脖子</label>
+          <input type="checkbox" id="face_class_15" name="face_classes" value="15">
+          <label for="face_class_15">项链</label>
+          <input type="checkbox" id="face_class_16" name="face_classes" value="16">
+          <label for="face_class_16">衣服</label>
+          <input type="checkbox" id="face_class_17" name="face_classes" value="17">
+          <label for="face_class_17">头发</label>
+          <input type="checkbox" id="face_class_18" name="face_classes" value="18">
+          <label for="face_class_18">帽子</label><br>
+          <br>
+          <h3>重新扣除的部分</h3>
+          <input type="checkbox" id="exclude_class_1" name="exclude_classes" value="1">
+          <label for="exclude_class_1">脸</label>
+          <input type="checkbox" id="exclude_class_2" name="exclude_classes" value="2">
+          <label for="exclude_class_2">左眉</label>
+          <input type="checkbox" id="exclude_class_3" name="exclude_classes" value="3">
+          <label for="exclude_class_3">右眉</label>
+          <input type="checkbox" id="exclude_class_4" name="exclude_classes" value="4">
+          <label for="exclude_class_4">左眼</label>
+          <input type="checkbox" id="exclude_class_5" name="exclude_classes" value="5">
+          <label for="exclude_class_5">右眼</label>
+          <input type="checkbox" id="exclude_class_6" name="exclude_classes" value="6">
+          <label for="exclude_class_6">眼镜</label><br>
+          <input type="checkbox" id="exclude_class_7" name="exclude_classes" value="7">
+          <label for="exclude_class_7">左耳</label>
+          <input type="checkbox" id="exclude_class_8" name="exclude_classes" value="8">
+          <label for="exclude_class_8">右耳</label>
+          <input type="checkbox" id="exclude_class_9" name="exclude_classes" value="9">
+          <label for="exclude_class_9">耳环</label>
+          <input type="checkbox" id="exclude_class_10" name="exclude_classes" value="10">
+          <label for="exclude_class_10">鼻子</label>
+          <input type="checkbox" id="exclude_class_11" name="exclude_classes" value="11">
+          <label for="exclude_class_11">牙</label>
+          <input type="checkbox" id="exclude_class_12" name="exclude_classes" value="12">
+          <label for="exclude_class_12">上唇</label>
+          <input type="checkbox" id="exclude_class_13" name="exclude_classes" value="13">
+          <label for="exclude_class_13">下唇</label><br>
+          <input type="checkbox" id="exclude_class_14" name="exclude_classes" value="14">
+          <label for="exclude_class_14">脖子</label>
+          <input type="checkbox" id="exclude_class_15" name="exclude_classes" value="15">
+          <label for="exclude_class_15">项链</label>
+          <input type="checkbox" id="exclude_class_16" name="exclude_classes" value="16">
+          <label for="exclude_class_16">衣服</label>
+          <input type="checkbox" id="exclude_class_17" name="exclude_classes" value="17">
+          <label for="exclude_class_17">头发</label>
+          <input type="checkbox" id="exclude_class_18" name="exclude_classes" value="18">
+          <label for="exclude_class_18">帽子</label><br>
+          <br>
+          <p>这里的像素都是扩张算法用到的矩阵大小. <br>这并不是指各个方向拓展的精确像素值. <br>这是由于遮罩形状本身不规则决定的,具体效果需要实验.</p>
+          <br>
+          <label for="dilation_pixels">像素扩张</label>
+          <input type="number" name="dilation_pixels" id="dilation_pixels" placeholder="Dilation Pixels" step="1">
+          <label for="feather_amount">羽化像素</label>
+          <input type="number" name="feather_amount" id="feather_amount" placeholder="Feather Amount" step="1">
+          <br>
+          <br>
+          <label for="add_original_mask">羽化保留原遮罩</label>      
+          <input type="checkbox" id="add_original_mask" name="add_original_mask">
+          <br>
+          <br>
+          <label for="threshold">临界值</label>
+          <input type="number" name="threshold" id="threshold" placeholder="threshold" step="0.01">
+          <p>(当有效百分比低于临界值时,文件名中的mask会变成failed,相当于传参给后续的程序)</p>
+          <button type="button" class="button" onclick="document.getElementById('file').click()">选择</button>
+          <span id="fileName" class="custom-file-label"></span>
+          <input type="file" name="file" id="file" class="custom-file-input" required onchange="updateFileName()" style="display: none;">
+          <button type="submit" class="button">计算</button>
+        </form>
+      </div>
+      <div style="width: 45%;">   
+        {% if result_data %}
+        <h2>运行结果:</h2>
+        <hr>
+        <ul>
+          {% for face_data in result_data %}
+          <li>
+            <p>脸 {{ loop.index }}:</p>
+            <p>性别: {{ face_data.gender }}</p>
+            <p>识别信心度: {{ face_data.confidence }}</p>
+            <p>遮罩像素: {{ face_data.nonzero_pixels }}</p>        
+            <p>识别框像素: {{ face_data.box_pixels }}</p>
+            <p>有效百分比(遮罩占识别框的比): {{ face_data.percentage }}</p>
+            <p>图片总像素: {{ face_data.image_pixels }}</p>      
+            <p>BiSeNet遮罩文件名: {{ face_data.mask_fileurl }}</p>
+            <img src="{{ url_for('static', filename=face_data.mask_fileurl) }}" alt="BiSeNet Mask" height="200">
+            <br>
+            <br>
+            <a href="{{ url_for('static', filename=face_data.mask_fileurl) }}" download="{{ face_data.mask_fileurl }}" class="button">Download</a>
+            <hr>       
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div> 
+    </div>
   </body>
 </html>
