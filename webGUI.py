@@ -1,6 +1,6 @@
 ##webGUI.py
 
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, send_from_directory
 import os
 from main import main as process_image
 
@@ -10,6 +10,12 @@ app.config["OUTPUT_FOLDER"] = "output"
 
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 os.makedirs(app.config["OUTPUT_FOLDER"], exist_ok=True)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, ''),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route("/", methods=["GET", "POST"])
 def index():
