@@ -284,14 +284,17 @@
           <br>
           <label for="add_original_mask_B">羽化保留原遮罩</label>      
           <input type="checkbox" id="add_original_mask_B" name="add_original_mask_B">
-          <hr>         
-          <hr>
+          <hr>                   
           <p>合成逻辑:A-B</p>
           <p>这里的像素都是扩张算法用到的矩阵大小. <br>这并不是指各个方向拓展的精确像素值. <br>这是由于遮罩形状本身不规则决定的,具体效果需要实验.</p>
+          <hr>
           <label for="widthcoefficient">box宽系数</label>
           <input type="number" name="widthcoefficient" id="widthcoefficient" placeholder="width coefficient" step="0.01">
           <label for="heightcoefficient">box高系数</label>
           <input type="number" name="heightcoefficient" id="heightcoefficient" placeholder="height coefficient" step="0.01">
+          <hr>
+          <label for="threshold">临界值</label>
+          <input type="number" name="threshold" id="threshold" placeholder="threshold" step="0.01">
           <p>(当有效百分比低于临界值时,文件名中的mask会变成failed,相当于传参给后续的程序)</p>
           <button type="button" class="button" onclick="document.getElementById('file').click()">选择</button>
           <span id="fileName" class="custom-file-label"></span>
