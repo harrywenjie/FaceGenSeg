@@ -31,9 +31,15 @@ async def process_image_endpoint(file: UploadFile = File(...)):
         exclude_classes = [7,8,9,17]
         add_original_mask = True
         threshold = 10
+        dilation_pixels_B = 5
+        feather_amount_B = 5
+        add_original_mask_B = True
 
         # Process the image
-        process_image(temp_file_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold)
+        process_image(
+            temp_file_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
+            dilation_pixels_B, feather_amount_B, add_original_mask_B
+        )
 
         # Remove the temporary file after processing
         os.remove(temp_file_path)
