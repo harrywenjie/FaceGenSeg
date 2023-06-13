@@ -37,6 +37,10 @@ def index():
         add_original_mask_B = 'add_original_mask_B' in request.form
         threshold = float(request.form.get('threshold', 10))
 
+        scale_factor_w = float(request.form.get('widthcoefficient', 1.4))
+        scale_factor_h = float(request.form.get('heightcoefficient', 1.5))
+
+
         # Convert to integers
         face_classes = [int(face_class) for face_class in face_classes]
         exclude_classes = [int(exclude_class) for exclude_class in exclude_classes]
@@ -47,7 +51,7 @@ def index():
         file.save(file_path)
         result_data = process_image(
             file_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold, 
-            dilation_pixels_B, feather_amount_B, add_original_mask_B
+            dilation_pixels_B, feather_amount_B, add_original_mask_B, scale_factor_w, scale_factor_h
         )  # Pass feather_amount to process_image
         os.remove(file_path)
         return render_template("index.html", result_data=result_data)

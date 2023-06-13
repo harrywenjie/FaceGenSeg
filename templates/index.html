@@ -77,6 +77,12 @@
           localStorage.setItem('dilation_pixels_B', dilationPixelsInputB.value);
           localStorage.setItem('feather_amount_B', featherAmountInputB.value);
 
+          //Save box coefficent
+          const boxWidthCoInput = document.getElementById('widthcoefficient');
+          const boxHeightCoInput = document.getElementById('heightcoefficient');
+          localStorage.setItem('widthcoefficient', boxWidthCoInput.value);
+          localStorage.setItem('heightcoefficient', boxHeightCoInput.value);
+
           // Save checkbox values
           const faceClassesCheckboxes = document.querySelectorAll('input[name="face_classes"]');
           const excludeClassesCheckboxes = document.querySelectorAll('input[name="exclude_classes"]');
@@ -117,6 +123,14 @@
           const storedFeatherAmountB = localStorage.getItem('feather_amount_B');
           dilationPixelsInputB.value = storedDilationPixelsB ? storedDilationPixelsB : 5;
           featherAmountInputB.value = storedFeatherAmountB ? storedFeatherAmountB : 5;
+
+          const boxWidthCoInput = document.getElementById('widthcoefficient');
+          const boxHeightCoInput = document.getElementById('heightcoefficient');
+          const storedboxWidthCo = localStorage.getItem('widthcoefficient');
+          const storedboxHeightCo = localStorage.getItem('heightcoefficient');
+          boxWidthCoInput.value = storedboxWidthCo ? storedboxWidthCo : 1.4;
+          boxHeightCoInput.value = storedboxHeightCo ? storedboxHeightCo : 1.5;
+
 
           // Set checkbox values
           const faceClassesCheckboxes = document.querySelectorAll('input[name="face_classes"]');
@@ -274,8 +288,10 @@
           <hr>
           <p>合成逻辑:A-B</p>
           <p>这里的像素都是扩张算法用到的矩阵大小. <br>这并不是指各个方向拓展的精确像素值. <br>这是由于遮罩形状本身不规则决定的,具体效果需要实验.</p>
-          <label for="threshold">临界值</label>
-          <input type="number" name="threshold" id="threshold" placeholder="threshold" step="0.01">
+          <label for="widthcoefficient">box宽系数</label>
+          <input type="number" name="widthcoefficient" id="widthcoefficient" placeholder="width coefficient" step="0.01">
+          <label for="heightcoefficient">box高系数</label>
+          <input type="number" name="heightcoefficient" id="heightcoefficient" placeholder="height coefficient" step="0.01">
           <p>(当有效百分比低于临界值时,文件名中的mask会变成failed,相当于传参给后续的程序)</p>
           <button type="button" class="button" onclick="document.getElementById('file').click()">选择</button>
           <span id="fileName" class="custom-file-label"></span>
@@ -295,6 +311,8 @@
             <p>识别信心度: {{ face_data.confidence }}</p>
             <p>遮罩像素: {{ face_data.nonzero_pixels }}</p>        
             <p>识别框像素: {{ face_data.box_pixels }}</p>
+            <p>识别框宽: {{ face_data.box_width }}</p>
+            <p>识别框高: {{ face_data.box_height }}</p>
             <p>有效百分比(遮罩占识别框的比): {{ face_data.percentage }}</p>
             <p>图片总像素: {{ face_data.image_pixels }}</p>      
             <p>BiSeNet遮罩文件名: {{ face_data.mask_fileurl }}</p>

@@ -19,7 +19,8 @@ def setup_bisenet(pretrained_model_path='face_parsing_PyTorch/res/cp/79999_iter.
 #Add dilation pixels here,currently at 5, this is a pixel matrix
 # 1-Face, 2-Left Eye Brow, 3-Right Eye Brow, 4-Left Eye, 5-Right Eye, 6-Glass, 7-l ear, 8-r ear, 9-ear ring, 10-nose, 11-teeth, 12-upper lip, 13-lower lip, 14-neck, 15-necklace, 16-Cloth, 17-Hair, 18-Hat
 def segment_face(
-        net, input_image, face_image, bounding_box, dilation_pixels=5, feather_amount=5, face_classes=[1,2,3,4,5,6,10,11,12,13], exclude_classes=[7,8,9,17], add_original_mask=True, threshold=10,
+        net, input_image, face_image, bounding_box, dilation_pixels=5, feather_amount=5,
+        face_classes=[1,2,3,4,5,6,10,11,12,13], exclude_classes=[7,8,9,17], add_original_mask=True, threshold=10,
         dilation_pixels_B=5, feather_amount_B=5, add_original_mask_B=True
     ):
     to_tensor = transforms.Compose([
@@ -99,20 +100,22 @@ def segment_face(
 
     full_mask[y1:y2, x1:x2] = binary_mask[y1_binary:y2_binary, x1_binary:x2_binary]
 
-    percentage, nonzero_pixels, box_pixels, image_pixels = mask_percentage(full_mask, bounding_box, input_image)
+    percentage, nonzero_pixels, box_pixels, image_pixels , box_width , box_height= mask_percentage(full_mask, bounding_box, input_image)
 
     if percentage >= threshold:
         success = True
     else:
         success = False
 
-    return full_mask, success, nonzero_pixels, box_pixels, image_pixels, percentage
+    return full_mask, success, nonzero_pixels, box_pixels, image_pixels, percentage, box_width , box_height
 
 #This is the percentage between the mask and the bounding box, not between the mask and the entire image.
 def mask_percentage(full_mask, bounding_box, input_image):
     x, y, w, h = bounding_box
     cropped_mask = full_mask[y:y + h, x:x + w]
     nonzero_pixels = np.count_nonzero(cropped_mask)
+    box_width = w
+    box_height = h
     box_pixels = w * h
     image_pixels = input_image.shape[0] * input_image.shape[1]
-    return (nonzero_pixels / box_pixels) * 100, nonzero_pixels, box_pixels, image_pixels
+    return (nonzero_pixels / box_pixels) * 100, nonzero_pixels, box_pixels, image_pixels, box_width, box_height
