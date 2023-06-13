@@ -7,11 +7,14 @@ import cv2
 import argparse
 import numpy as np
 from face_gender_detection import detect_faces_and_gender
-from face_segmentation import setup_bisenet, segment_face_with_check
+from face_segmentation import setup_bisenet, segment_face
 
 filetype = 'jpg'  #use jpg or png
 
-def main(input_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold):
+def main(
+        input_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
+        dilation_pixels_B, feather_amount_B, add_original_mask_B
+    ):
     image = cv2.imread(input_path)
 
     # Extract original file name without extension
@@ -46,8 +49,9 @@ def main(input_path, dilation_pixels, feather_amount, face_classes, exclude_clas
         face_image = image[new_y:new_y+new_h, new_x:new_x+new_w]
 
         # Segment face using BiSeNet
-        face_mask, segmentation_success, nonzero_pixels, box_pixels, image_pixels, percentage = segment_face_with_check(
-            bisenet_model, image, face_image, new_bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold
+        face_mask, segmentation_success, nonzero_pixels, box_pixels, image_pixels, percentage = segment_face(
+            bisenet_model, image, face_image, new_bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
+            dilation_pixels_B, feather_amount_B, add_original_mask_B
         )
 
         # Save face mask with the specified format
