@@ -77,25 +77,38 @@
           localStorage.setItem('dilation_pixels_B', dilationPixelsInputB.value);
           localStorage.setItem('feather_amount_B', featherAmountInputB.value);
 
+          const dilationPixelsInputC = document.getElementById('dilation_pixels_C');
+          const featherAmountInputC = document.getElementById('feather_amount_C');
+          localStorage.setItem('dilation_pixels_C', dilationPixelsInputC.value);
+          localStorage.setItem('feather_amount_C', featherAmountInputC.value);
+
           // Save checkbox values
           const faceClassesCheckboxes = document.querySelectorAll('input[name="face_classes"]');
           const excludeClassesCheckboxes = document.querySelectorAll('input[name="exclude_classes"]');
+          const includeClassesCheckboxes = document.querySelectorAll('input[name="include_classes"]');
           let faceClassesValues = [];
           let excludeClassesValues = [];
+          let includeClassesValues = [];
           faceClassesCheckboxes.forEach((checkbox) => {
             faceClassesValues.push(checkbox.checked);
           });
           excludeClassesCheckboxes.forEach((checkbox) => {
             excludeClassesValues.push(checkbox.checked);
           });
+          includeClassesCheckboxes.forEach((checkbox) => {
+            includeClassesValues.push(checkbox.checked);
+          });
 
           localStorage.setItem('face_classes', JSON.stringify(faceClassesValues));
           localStorage.setItem('exclude_classes', JSON.stringify(excludeClassesValues));
+          localStorage.setItem('include_classes', JSON.stringify(includeClassesValues));
 
           const addOriginalMaskCheckbox = document.getElementById('add_original_mask');
           localStorage.setItem('add_original_mask', addOriginalMaskCheckbox.checked);
           const addOriginalMaskCheckboxB = document.getElementById('add_original_mask_B');
           localStorage.setItem('add_original_mask_B', addOriginalMaskCheckboxB.checked);
+          const addOriginalMaskCheckboxC = document.getElementById('add_original_mask_C');
+          localStorage.setItem('add_original_mask_C', addOriginalMaskCheckboxB.checked);
 
           // Save threshold
           const thresholdInput = document.getElementById('threshold');
@@ -118,11 +131,20 @@
           dilationPixelsInputB.value = storedDilationPixelsB ? storedDilationPixelsB : 5;
           featherAmountInputB.value = storedFeatherAmountB ? storedFeatherAmountB : 5;
 
+          const dilationPixelsInputC = document.getElementById('dilation_pixels_C');
+          const featherAmountInputC = document.getElementById('feather_amount_C');
+          const storedDilationPixelsC = localStorage.getItem('dilation_pixels_C');
+          const storedFeatherAmountC = localStorage.getItem('feather_amount_C');
+          dilationPixelsInputC.value = storedDilationPixelsC ? storedDilationPixelsC : 5;
+          featherAmountInputC.value = storedFeatherAmountC ? storedFeatherAmountC : 5;
+
           // Set checkbox values
           const faceClassesCheckboxes = document.querySelectorAll('input[name="face_classes"]');
           const excludeClassesCheckboxes = document.querySelectorAll('input[name="exclude_classes"]');
+          const includeClassesCheckboxes = document.querySelectorAll('input[name="include_classes"]');
           let storedFaceClassesValues = JSON.parse(localStorage.getItem('face_classes'));
           let storedExcludeClassesValues = JSON.parse(localStorage.getItem('exclude_classes'));
+          let storedIncludeClassesValues = JSON.parse(localStorage.getItem('include_classes'));
  
 
           if (storedFaceClassesValues) {
@@ -147,6 +169,15 @@
             });
           }
 
+          if (storedIncludeClassesValues) {
+            includeClassesCheckboxes.forEach((checkbox, index) => {
+              checkbox.checked = storedIncludeClassesValues[index];
+            });
+          } else {
+            // Set default values
+            //Empty for layer 3
+          }
+
           //Set original mask bool
           const addOriginalMaskCheckbox = document.getElementById('add_original_mask');
           const storedAddOriginalMask = localStorage.getItem('add_original_mask');
@@ -157,6 +188,10 @@
           const storedAddOriginalMaskB = localStorage.getItem('add_original_mask_B');
           addOriginalMaskCheckboxB.checked = storedAddOriginalMaskB !== null ? storedAddOriginalMaskB === 'true' : true;
 
+          //Set original maskB bool
+          const addOriginalMaskCheckboxC = document.getElementById('add_original_mask_C');
+          const storedAddOriginalMaskC = localStorage.getItem('add_original_mask_C');
+          addOriginalMaskCheckboxC.checked = storedAddOriginalMaskC !== null ? storedAddOriginalMaskC === 'true' : true;
 
           // Set threshold
           const thresholdInput = document.getElementById('threshold');
@@ -270,9 +305,56 @@
           <br>
           <label for="add_original_mask_B">羽化保留原遮罩</label>      
           <input type="checkbox" id="add_original_mask_B" name="add_original_mask_B">
-          <hr>         
           <hr>
-          <p>合成逻辑:A-B</p>
+          <h3>第三层B（加）</h3>
+          <input type="checkbox" id="include_class_1" name="include_classes" value="1">
+          <label for="include_class_1">脸</label>
+          <input type="checkbox" id="include_class_2" name="include_classes" value="2">
+          <label for="include_class_2">左眉</label>
+          <input type="checkbox" id="include_class_3" name="include_classes" value="3">
+          <label for="include_class_3">右眉</label>
+          <input type="checkbox" id="include_class_4" name="include_classes" value="4">
+          <label for="include_class_4">左眼</label>
+          <input type="checkbox" id="include_class_5" name="include_classes" value="5">
+          <label for="include_class_5">右眼</label>
+          <input type="checkbox" id="include_class_6" name="include_classes" value="6">
+          <label for="include_class_6">眼镜</label><br>
+          <input type="checkbox" id="include_class_7" name="include_classes" value="7">
+          <label for="include_class_7">左耳</label>
+          <input type="checkbox" id="include_class_8" name="include_classes" value="8">
+          <label for="include_class_8">右耳</label>
+          <input type="checkbox" id="include_class_9" name="include_classes" value="9">
+          <label for="include_class_9">耳环</label>
+          <input type="checkbox" id="include_class_10" name="include_classes" value="10">
+          <label for="include_class_10">鼻子</label>
+          <input type="checkbox" id="include_class_11" name="include_classes" value="11">
+          <label for="include_class_11">牙</label>
+          <input type="checkbox" id="include_class_12" name="include_classes" value="12">
+          <label for="include_class_12">上唇</label>
+          <input type="checkbox" id="include_class_13" name="include_classes" value="13">
+          <label for="include_class_13">下唇</label><br>
+          <input type="checkbox" id="include_class_14" name="include_classes" value="14">
+          <label for="include_class_14">脖子</label>
+          <input type="checkbox" id="include_class_15" name="include_classes" value="15">
+          <label for="include_class_15">项链</label>
+          <input type="checkbox" id="include_class_16" name="include_classes" value="16">
+          <label for="include_class_16">衣服</label>
+          <input type="checkbox" id="include_class_17" name="include_classes" value="17">
+          <label for="include_class_17">头发</label>
+          <input type="checkbox" id="include_class_18" name="include_classes" value="18">
+          <label for="include_class_18">帽子</label><br>
+          <br>
+          <label for="dilation_pixels_C">像素扩张</label>
+          <input type="number" name="dilation_pixels_C" id="dilation_pixels_C" placeholder="Dilation Pixels" step="1">
+          <br>
+          <label for="feather_amount_C">羽化像素</label>
+          <input type="number" name="feather_amount_C" id="feather_amount_C" placeholder="Feather Amount" step="1">
+          <br>
+          <br>
+          <label for="add_original_mask_C">羽化保留原遮罩</label>      
+          <input type="checkbox" id="add_original_mask_C" name="add_original_mask_C">        
+          <hr>
+          <p>合成逻辑:A-B+C</p>
           <p>这里的像素都是扩张算法用到的矩阵大小. <br>这并不是指各个方向拓展的精确像素值. <br>这是由于遮罩形状本身不规则决定的,具体效果需要实验.</p>
           <label for="threshold">临界值</label>
           <input type="number" name="threshold" id="threshold" placeholder="threshold" step="0.01">
