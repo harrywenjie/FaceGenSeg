@@ -69,13 +69,17 @@
         function saveValues() {
           const dilationPixelsInput = document.getElementById('dilation_pixels');
           const featherAmountInput = document.getElementById('feather_amount');
+          const iterationsAInput = document.getElementById('iterationsA');
           localStorage.setItem('dilation_pixels', dilationPixelsInput.value);
           localStorage.setItem('feather_amount', featherAmountInput.value);
+          localStorage.setItem('iterationsA', iterationsAInput.value);
 
           const dilationPixelsInputB = document.getElementById('dilation_pixels_B');
           const featherAmountInputB = document.getElementById('feather_amount_B');
+          const iterationsBInput = document.getElementById('iterationsB');
           localStorage.setItem('dilation_pixels_B', dilationPixelsInputB.value);
           localStorage.setItem('feather_amount_B', featherAmountInputB.value);
+          localStorage.setItem('iterationsB', iterationsBInput.value);
 
           //Save box coefficent
           const boxWidthCoInput = document.getElementById('widthcoefficient');
@@ -112,17 +116,23 @@
         function setValues() {
           const dilationPixelsInput = document.getElementById('dilation_pixels');
           const featherAmountInput = document.getElementById('feather_amount');
+          const iterationsAInput = document.getElementById('iterationsA');
           const storedDilationPixels = localStorage.getItem('dilation_pixels');
           const storedFeatherAmount = localStorage.getItem('feather_amount');
+          const storediterationsA = localStorage.getItem('iterationsA');
           dilationPixelsInput.value = storedDilationPixels ? storedDilationPixels : 5;
           featherAmountInput.value = storedFeatherAmount ? storedFeatherAmount : 5;
+          iterationsAInput.value = storediterationsA ? storediterationsA : 1;
 
           const dilationPixelsInputB = document.getElementById('dilation_pixels_B');
           const featherAmountInputB = document.getElementById('feather_amount_B');
+          const iterationsBInput = document.getElementById('iterationsB');
           const storedDilationPixelsB = localStorage.getItem('dilation_pixels_B');
           const storedFeatherAmountB = localStorage.getItem('feather_amount_B');
+          const storediterationsB = localStorage.getItem('iterationsB');
           dilationPixelsInputB.value = storedDilationPixelsB ? storedDilationPixelsB : 5;
           featherAmountInputB.value = storedFeatherAmountB ? storedFeatherAmountB : 5;
+          iterationsBInput.value = storediterationsB ? storediterationsB : 1;
 
           const boxWidthCoInput = document.getElementById('widthcoefficient');
           const boxHeightCoInput = document.getElementById('heightcoefficient');
@@ -229,6 +239,8 @@
           <br>
           <label for="dilation_pixels">像素扩张</label>
           <input type="number" name="dilation_pixels" id="dilation_pixels" placeholder="Dilation Pixels" step="1">
+          <label for="iterationsA">扩张遍历次数</label>
+          <input type="number" name="iterationsA" id="iterationsA" placeholder="iterations" step="1">
           <br>
           <label for="feather_amount">羽化像素</label>
           <input type="number" name="feather_amount" id="feather_amount" placeholder="Feather Amount" step="1">
@@ -277,6 +289,8 @@
           <br>
           <label for="dilation_pixels_B">像素扩张</label>
           <input type="number" name="dilation_pixels_B" id="dilation_pixels_B" placeholder="Dilation Pixels" step="1">
+          <label for="iterationsB">扩张遍历次数</label>
+          <input type="number" name="iterationsB" id="iterationsB" placeholder="iterations" step="1">
           <br>
           <label for="feather_amount_B">羽化像素</label>
           <input type="number" name="feather_amount_B" id="feather_amount_B" placeholder="Feather Amount" step="1">

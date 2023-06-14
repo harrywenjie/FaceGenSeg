@@ -13,7 +13,7 @@ filetype = 'jpg'  #use jpg or png
 
 def main(
         input_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
-        dilation_pixels_B, feather_amount_B, add_original_mask_B, scale_factor_w = 1.4, scale_factor_h = 1.5
+        dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w = 1.4, scale_factor_h = 1.5
     ):
     image = cv2.imread(input_path)
 
@@ -49,7 +49,7 @@ def main(
         # Segment face using BiSeNet
         face_mask, segmentation_success, nonzero_pixels, box_pixels, image_pixels, percentage , box_width , box_height = segment_face(
             bisenet_model, image, face_image, new_bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
-            dilation_pixels_B, feather_amount_B, add_original_mask_B
+            dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB
         )
 
         # Save face mask with the specified format

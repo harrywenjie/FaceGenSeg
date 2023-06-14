@@ -21,7 +21,7 @@ def setup_bisenet(pretrained_model_path='face_parsing_PyTorch/res/cp/79999_iter.
 def segment_face(
         net, input_image, face_image, bounding_box, dilation_pixels=5, feather_amount=5,
         face_classes=[1,2,3,4,5,6,10,11,12,13], exclude_classes=[7,8,9,17], add_original_mask=True, threshold=10,
-        dilation_pixels_B=5, feather_amount_B=5, add_original_mask_B=True
+        dilation_pixels_B=5, feather_amount_B=5, add_original_mask_B=True, iterationsA=1, iterationsB=1
     ):
     to_tensor = transforms.Compose([
         transforms.Resize((512, 512), Image.BILINEAR),
@@ -61,12 +61,12 @@ def segment_face(
     # Dilate the binary mask if dilation_pixels > 0
     if dilation_pixels > 0:
         kernel = np.ones((dilation_pixels, dilation_pixels), np.uint8)
-        binary_mask = cv2.dilate(binary_mask, kernel, iterations=1)
+        binary_mask = cv2.dilate(binary_mask, kernel, iterations=iterationsA)
 
     # Dilate second layer
     if dilation_pixels_B > 0:
         kernel = np.ones((dilation_pixels_B, dilation_pixels_B), np.uint8)
-        exclude_mask = cv2.dilate(exclude_mask, kernel, iterations=1)
+        exclude_mask = cv2.dilate(exclude_mask, kernel, iterations=iterationsB)
 
     # Multiply feather_amount and round up to the nearest odd number then Apply a blur to create feather effect
     if feather_amount > 0:
