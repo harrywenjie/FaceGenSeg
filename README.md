@@ -2,15 +2,15 @@
 
 ### FaceGenSeg 是个整合了面部侦测，性别识别, 和面部遮罩的工具  
 
-### 6月大更新,自己运行看
-### 注：Windows下可跳过以下步骤，只需要安装好python就可以用run.bat直接运行GUI版本, 然后访问 http://127.0.0.1:5500/ 该方法无GPU加速,仅使用CPU,测试用.
+### 6月大更新
+
 ---
 ## 环境配置
 
 ### Windows（测试环境Windows 11）
 1. Nvidia显卡，驱动版本515以上
 
-2. 安装 python 3.10.6
+2. 安装 python 3.10.6 (3.10大版本都行,比如3.10.9)
 
     https://www.python.org/downloads/windows/
 
@@ -27,7 +27,7 @@
     call venv\Scripts\activate.bat
     pip install -r requirements.txt
     ```
-
+    #### 注：run.bat 里其实就是 4 和 5  
 
     ### Windows下GPU加速（可选）
     
@@ -41,7 +41,7 @@
     安装cuDNN
     1.自建文件夹到以下路经，中间没有的文件夹也自己建
     C:\Program Files\NVIDIA\CUDNN\v8.x\
-    2.下载cuDNN8.5.0.96 (更新: cudnn-windows-x86_64-8.6.0.163貌似也行)
+    2.下载cuDNN8.5.0.96 (更新: 此版本以上貌似都行, 测试了8.9.2一切正常)
     https://developer.nvidia.com/rdp/cudnn-archive
     3.解压后把三个文件夹bin include lib复制到第1步我们建好的文件夹内
     4.把路径'C:\Program Files\NVIDIA\CUDNN\v8.x\bin'加入Windows系统变量'PATH'
@@ -52,7 +52,7 @@
     ```
 ### Linux (测试环境Ubuntu22.04)
 
-1. Nvidia显卡，驱动版本N社官方515  
+1. Nvidia显卡，驱动版本N社官方515  （525测试通过，530我装不上CUDA，也许是我的问题）
     (nvidia driver metapackage from nvidia-driver-515(proprietary))
     ```
     sudo apt install nvidia-driver-515
@@ -108,7 +108,7 @@
     nvcc --version
     ```
     ```    
-    //====安装cuDNN 8.5.0.96====（更新: 8.6也可以）
+    //====安装cuDNN 8.5.0.96====（更新: 之后的版本到8.9.2貌似都可以）
     //下载地址
     https://developer.nvidia.com/rdp/cudnn-archive
     //需要N社开发者账号
@@ -154,6 +154,8 @@
     http://0.0.0.0:8800/process/
     ```
     ```
+    更新：其它所有可调参数都在webAPI.py内修改
+
     遮罩文件名为:
     原文件名+_mask(遮罩成功)/_failed(遮罩失败)_f(女)/m(男)_面孔序列.jpg
     例：test001_mask_f_1.jpg
