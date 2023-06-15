@@ -172,7 +172,7 @@ torch升级为2.0.1+CU118的编译版本,tensorflow更新为2.12
     curl -X POST "http://localhost:8800/process/" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" -F "file=@path_to_your_file"
     ```
     #### 再比如用Python发送
-    ```
+    ```python
     import requests
 
     url = "http://localhost:8800/process/"
