@@ -65,12 +65,13 @@ def main(
         # Save face mask with the specified format
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
         mask_status = "mask" if segmentation_success else "failed"
-        mask_filename = os.path.join(output_dir, f"{original_name}_{mask_status}_{gender_letter}_{i + 1}_{padding}.{filetype}")  # Use filetype variable
+        mask_filename = os.path.join(output_dir, f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}")  # Use filetype variable
         cv2.imwrite(mask_filename, face_mask)
 
 
         # Add mask_filename, bbox_mask_filename, and pixel data to face_data
-        face_data['mask_fileurl'] = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}_{padding}.{filetype}"  # Use filetype variable
+        face_data['mask_fileurl'] = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}"  # Use filetype variable
+        face_data['segmentation_success'] = segmentation_success
         face_data['nonzero_pixels'] = nonzero_pixels
         face_data['box_pixels'] = box_pixels
         face_data['image_pixels'] = image_pixels
