@@ -33,6 +33,7 @@ def main(
     os.makedirs(output_dir, exist_ok=True)
 
     for i, face_data in enumerate(face_gender_data):
+        face_data['face_ID'] = i+1
         bounding_box = face_data['bounding_box']
         x, y, w, h = bounding_box
 
@@ -85,18 +86,12 @@ def main(
         # Convert numpy.float32 to float
         face_data['confidence'] = float(face_data['confidence'])
 
-        # Print face and gender information
-        print(f"Face {i + 1}:")
-        print(f"  Bounding box: {bounding_box}")
-        print(f"  Gender: {face_data['gender']}")
-        print(f"  Confidence: {face_data['confidence']}")
-        print(f"  Mask saved as: {localpath}")
 
     print("Processing complete!")
 
     for face_data in face_gender_data:
         for key, value in face_data.items():
-            print(f"{key}: {type(value)}")
+            print(f"{key}: {value}")
 
     return face_gender_data
 
