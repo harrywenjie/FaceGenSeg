@@ -335,10 +335,10 @@
             <p>有效百分比(遮罩占识别框的比): {{ face_data.percentage }}</p>
             <p>图片总像素: {{ face_data.image_pixels }}</p>      
             <p>BiSeNet遮罩文件名: {{ face_data.mask_fileurl }}</p>
-            <img src="{{ url_for('static', filename=face_data.mask_fileurl) }}" alt="BiSeNet Mask" height="200">
+            <img src="{{ url_for('static', filename=face_data.mask_filename) }}" alt="BiSeNet Mask" height="200">
             <br>
             <br>
-            <a href="{{ url_for('static', filename=face_data.mask_fileurl) }}" download="{{ face_data.mask_fileurl }}" class="button">Download</a>
+            <a href="{{ url_for('static', filename=face_data.mask_filename) }}" download="{{ face_data.mask_fileurl }}" class="button">Download</a>
             <hr>       
           </li>
           {% endfor %}
