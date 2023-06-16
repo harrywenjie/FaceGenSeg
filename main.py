@@ -52,6 +52,14 @@ def main(
             dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB
         )
 
+        # Convert numpy data types to native Python data types
+        nonzero_pixels = int(nonzero_pixels)
+        box_pixels = int(box_pixels)
+        image_pixels = int(image_pixels)
+        percentage = float(percentage)
+        box_width = int(box_width)
+        box_height = int(box_height)
+
         padding = int(box_width/1.3)
 
         # Save face mask with the specified format
@@ -70,7 +78,10 @@ def main(
         face_data['box_width'] = box_width
         face_data['box_height'] = box_height
         face_data['padding'] = padding
-        
+        # Convert numpy.int64 in bounding_box to int
+        face_data['bounding_box'] = tuple(int(x) for x in face_data['bounding_box'])        
+        # Convert numpy.float32 to float
+        face_data['confidence'] = float(face_data['confidence'])
 
         # Print face and gender information
         print(f"Face {i + 1}:")
@@ -80,6 +91,11 @@ def main(
         print(f"  Mask saved as: {mask_filename}")
 
     print("Processing complete!")
+
+    for face_data in face_gender_data:
+        for key, value in face_data.items():
+            print(f"{key}: {type(value)}")
+
     return face_gender_data
 
 

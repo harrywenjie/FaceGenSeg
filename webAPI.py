@@ -41,18 +41,20 @@ async def process_image_endpoint(file: UploadFile = File(...)):
 
 
         # Process the image
-        process_image(
+        face_gender_data = process_image(
             temp_file_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
             dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w, scale_factor_h
-        )
+        )  
 
         # Remove the temporary file after processing
         os.remove(temp_file_path)
-
-        return JSONResponse(content={"status": "success", "message": "Image processed successfully."})
+        
+        return JSONResponse(content={"status": "success", "message": "Image processed successfully.", "data": face_gender_data})
 
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+    
+
 
 if __name__ == "__main__":
     import uvicorn
