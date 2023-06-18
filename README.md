@@ -56,7 +56,11 @@ torch升级为2.0.1+CU118的编译版本,tensorflow更新为2.12
 ---
 ### Linux (测试环境Ubuntu22.04)
 
-1. Nvidia显卡，驱动版本N社官方515  （525测试通过，530我装不上CUDA，也许是我的问题）
+1. Nvidia显卡，驱动版本N社官方515  
+    （525测试通过，<s>530我装不上CUDA，也许是我的问题</s> N社有详细的兼容性表格  
+    包含了驱动版本，CUDA和CUDNN,全都要匹配  
+    https://docs.nvidia.com/deeplearning/cudnn/support-matrix/index.html）
+
     (nvidia driver metapackage from nvidia-driver-515(proprietary))
     ```
     sudo apt install nvidia-driver-515
