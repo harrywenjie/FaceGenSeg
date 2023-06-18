@@ -89,7 +89,7 @@ torch升级为2.0.1+CU118的编译版本,tensorflow更新为2.12
     ### Linux下GPU加速（可选）
     ```
     //====安装cuda 11.7====  
-    (更新: 11.8也可以, 在某些Ubuntu的发行版上貌似可以直接'sudo apt install cuda toolkit',不用手动下载CUDA)  
+    (更新: 11.8也可以, 在某些Ubuntu的发行版上貌似可以直接'sudo apt install nvidia-cuda-toolkit',不用手动下载CUDA)  
 
     wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
     sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
