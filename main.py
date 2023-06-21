@@ -23,17 +23,13 @@ def main(
     # Detect faces and gender
     face_gender_data = detect_faces_and_gender(image)
 
-    # Sort face_gender_data by confidence value in descending order
-    face_gender_data.sort(key=lambda x: x['confidence'], reverse=True)
-
     # Set up BiSeNet for face segmentation
     bisenet_model = setup_bisenet()
 
     output_dir = 'static'
     os.makedirs(output_dir, exist_ok=True)
 
-    for i, face_data in enumerate(face_gender_data):
-        face_data['face_ID'] = i+1
+    for i, face_data in enumerate(face_gender_data):        
         bounding_box = face_data['bounding_box']
         x, y, w, h = bounding_box
 
@@ -86,6 +82,17 @@ def main(
         # Convert numpy.float32 to float
         face_data['confidence'] = float(face_data['confidence'])
 
+    # Now sort face_gender_data by 'percentage' value in descending order
+    face_gender_data.sort(key=lambda x: x['nonzero_pixels'], reverse=True)
+
+    # Assign face_ID based on the new order
+    for i, face_data in enumerate(face_gender_data):
+        # Create a new dictionary with face_ID first
+        new_face_data = {'face_ID': i + 1}
+        # Update the new dictionary with the rest of the face data
+        new_face_data.update(face_data)
+        # Replace the old face data with the new one
+        face_gender_data[i] = new_face_data
 
     print("Processing complete!")
 
