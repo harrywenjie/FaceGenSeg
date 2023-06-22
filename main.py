@@ -29,6 +29,9 @@ def main(
     output_dir = 'static'
     os.makedirs(output_dir, exist_ok=True)
 
+
+    # Process all the faces and store the results in the `face_gender_data` list
+    successful_face_data = []
     for i, face_data in enumerate(face_gender_data):        
         bounding_box = face_data['bounding_box']
         x, y, w, h = bounding_box
@@ -64,7 +67,7 @@ def main(
         face_data['face_mask'] = face_mask
 
         # Add mask_filename, bbox_mask_filename, and pixel data to face_data 
-        face_data['segmentation_success'] = segmentation_success
+        # face_data['segmentation_success'] = segmentation_success
         face_data['nonzero_pixels'] = nonzero_pixels
         face_data['box_pixels'] = box_pixels
         face_data['image_pixels'] = image_pixels
@@ -77,34 +80,38 @@ def main(
         # Convert numpy.float32 to float
         face_data['confidence'] = float(face_data['confidence'])
 
-    # Now sort face_gender_data by 'percentage' value in descending order
-    face_gender_data.sort(key=lambda x: x['nonzero_pixels'], reverse=True)
+        if segmentation_success:
+            successful_face_data.append(face_data)
+
+    # Now sort successful_face_data by 'percentage' value in descending order
+    successful_face_data.sort(key=lambda x: x['nonzero_pixels'], reverse=True)
 
     # Assign face_ID based on the new order
-    for i, face_data in enumerate(face_gender_data):
+    for i, face_data in enumerate(successful_face_data):
         # Create a new dictionary with face_ID first
         new_face_data = {'face_ID': i + 1}
         # Update the new dictionary with the rest of the face data
         new_face_data.update(face_data)
         # Replace the old face data with the new one
-        face_gender_data[i] = new_face_data
+        successful_face_data[i] = new_face_data
 
     # Save face masks to files based on the new order
-    for i, face_data in enumerate(face_gender_data):
+    for i, face_data in enumerate(successful_face_data):
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
-        mask_status = "mask" if face_data['segmentation_success'] else "failed"
-        filename = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}"
+        filename = f"{original_name}_mask_{gender_letter}_{i + 1}.{filetype}"
         localpath = os.path.join(output_dir, filename)  
         cv2.imwrite(localpath, face_data['face_mask'])
-        face_data['mask_filename'] = filename 
+        face_data['mask_filename'] = filename  
+        # Remove 'face_mask' from face_data
+        del face_data['face_mask']
 
     print("Processing complete!")
 
-    for face_data in face_gender_data:
+    for face_data in successful_face_data:
         for key, value in face_data.items():
             print(f"{key}: {value}")
 
-    return face_gender_data
+    return successful_face_data
 
 
 if __name__ == "__main__":
