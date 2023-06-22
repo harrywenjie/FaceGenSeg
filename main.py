@@ -15,7 +15,12 @@ def main(
         input_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
         dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w = 1.4, scale_factor_h = 1.5
     ):
-    image = cv2.imread(input_path)
+
+    with open(input_path, 'rb') as f:
+        bytes = bytearray(f.read())
+        numpyarray = np.asarray(bytes, dtype=np.uint8)
+        image = cv2.imdecode(numpyarray, cv2.IMREAD_UNCHANGED)
+
 
     # Extract original file name without extension
     original_name = os.path.splitext(os.path.basename(input_path))[0]
@@ -99,11 +104,19 @@ def main(
     for i, face_data in enumerate(successful_face_data):
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
         filename = f"{original_name}_mask_{gender_letter}_{i + 1}.{filetype}"
-        localpath = os.path.join(output_dir, filename)  
-        cv2.imwrite(localpath, face_data['face_mask'])
+        localpath = os.path.join(output_dir, filename)
+        
+        # Encode the image into binary data
+        retval, buffer = cv2.imencode('.' + filetype, face_data['face_mask'])
+        
+        # Write the binary data to a file
+        with open(localpath, 'wb') as f:
+            f.write(buffer)
+        
         face_data['mask_filename'] = filename  
         # Remove 'face_mask' from face_data
         del face_data['face_mask']
+
 
     print("Processing complete!")
 
