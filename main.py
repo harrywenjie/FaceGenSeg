@@ -59,16 +59,11 @@ def main(
 
         padding = int(box_width/1.3)
 
-        # Save face mask with the specified format
-        gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
-        mask_status = "mask" if segmentation_success else "failed"
-        filename = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}"
-        localpath = os.path.join(output_dir, filename)  
-        cv2.imwrite(localpath, face_mask)
 
+        # Store face_mask in face_data instead of saving it to a file
+        face_data['face_mask'] = face_mask
 
-        # Add mask_filename, bbox_mask_filename, and pixel data to face_data
-        face_data['mask_filename'] = filename  
+        # Add mask_filename, bbox_mask_filename, and pixel data to face_data 
         face_data['segmentation_success'] = segmentation_success
         face_data['nonzero_pixels'] = nonzero_pixels
         face_data['box_pixels'] = box_pixels
@@ -93,6 +88,15 @@ def main(
         new_face_data.update(face_data)
         # Replace the old face data with the new one
         face_gender_data[i] = new_face_data
+
+    # Save face masks to files based on the new order
+    for i, face_data in enumerate(face_gender_data):
+        gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
+        mask_status = "mask" if face_data['segmentation_success'] else "failed"
+        filename = f"{original_name}_{mask_status}_{gender_letter}_{i + 1}.{filetype}"
+        localpath = os.path.join(output_dir, filename)  
+        cv2.imwrite(localpath, face_data['face_mask'])
+        face_data['mask_filename'] = filename 
 
     print("Processing complete!")
 
