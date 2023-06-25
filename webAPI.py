@@ -38,12 +38,14 @@ async def process_image_endpoint(file: UploadFile = File(...)):
         iterationsB=1
         scale_factor_w = 1.4
         scale_factor_h = 1.5
+        box = True
 
 
         # Process the image
         face_gender_data = process_image(
             temp_file_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
-            dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w, scale_factor_h
+            dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w, scale_factor_h,
+            box
         )  
 
         # Remove the temporary file after processing

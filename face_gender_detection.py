@@ -21,11 +21,13 @@ def detect_faces_and_gender(image):
 
 
         gender = "Male" if face.sex == "M" else "Female"
+        
 
         face_data = {
             'bounding_box': bounding_box,
             'gender': gender,
             'confidence': face.det_score,
+            'age': face.age,
         }
         face_gender_data.append(face_data)
 

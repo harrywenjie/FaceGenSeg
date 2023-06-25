@@ -13,9 +13,11 @@ filetype = 'jpg'  #use jpg or png
 
 def main(
         input_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
-        dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w = 1.4, scale_factor_h = 1.5
+        dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w = 1.4, scale_factor_h = 1.5,
+        box = True
     ):
 
+    # by pass open cv non ASCII file name problem
     with open(input_path, 'rb') as f:
         bytes = bytearray(f.read())
         numpyarray = np.asarray(bytes, dtype=np.uint8)
@@ -51,11 +53,23 @@ def main(
 
         face_image = image[new_y:new_y+new_h, new_x:new_x+new_w]
 
-        # Segment face using BiSeNet
-        face_mask, segmentation_success, nonzero_pixels, box_pixels, image_pixels, percentage , box_width , box_height = segment_face(
-            bisenet_model, image, face_image, new_bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
-            dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB
-        )
+        if box:
+            # Create a mask from the new_bounding_box
+            face_mask = np.zeros((image.shape[0], image.shape[1]), dtype=np.uint8)
+            face_mask[new_y:new_y+new_h, new_x:new_x+new_w] = 255
+            segmentation_success = True            
+            nonzero_pixels = np.count_nonzero(face_mask)
+            box_pixels = new_w * new_h
+            image_pixels = image.shape[0] * image.shape[1]
+            percentage = (nonzero_pixels / image_pixels) * 100
+            box_width = new_w
+            box_height = new_h
+        else:
+            # Segment face using BiSeNet
+            face_mask, segmentation_success, nonzero_pixels, box_pixels, image_pixels, percentage , box_width , box_height = segment_face(
+                bisenet_model, image, face_image, new_bounding_box, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold,
+                dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB
+            )
 
         # Convert numpy data types to native Python data types
         nonzero_pixels = int(nonzero_pixels)
@@ -103,7 +117,8 @@ def main(
     # Save face masks to files based on the new order
     for i, face_data in enumerate(successful_face_data):
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
-        filename = f"{original_name}_mask_{gender_letter}_{i + 1}.{filetype}"
+        age = face_data['age']
+        filename = f"{original_name}_mask_{gender_letter}_{age}_{i + 1}.{filetype}"
         localpath = os.path.join(output_dir, filename)
         
         # Encode the image into binary data

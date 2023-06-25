@@ -43,6 +43,8 @@ def index():
         iterationsA = int(request.form.get('iterationsA', 5)) 
         iterationsB = int(request.form.get('iterationsB', 5)) 
 
+        box= 'boxmask' in request.form
+
         # Convert to integers
         face_classes = [int(face_class) for face_class in face_classes]
         exclude_classes = [int(exclude_class) for exclude_class in exclude_classes]
@@ -53,7 +55,8 @@ def index():
         file.save(file_path)
         result_data = process_image(
             file_path, dilation_pixels, feather_amount, face_classes, exclude_classes, add_original_mask, threshold, 
-            dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w, scale_factor_h
+            dilation_pixels_B, feather_amount_B, add_original_mask_B, iterationsA, iterationsB, scale_factor_w, scale_factor_h,
+            box
         )  # Pass feather_amount to process_image
         os.remove(file_path)
         return render_template("index.html", result_data=result_data)
