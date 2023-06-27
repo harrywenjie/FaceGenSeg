@@ -169,7 +169,7 @@ torch升级为2.0.1+CU118的编译版本,tensorflow更新为2.12
 
     遮罩文件名为:    
     原文件名+_mask(遮罩成功)/_failed(遮罩失败)_f(女)/m(男)_年龄_Padding_面孔序列.jpg
-    例：test001_mask_f_1.jpg
+    例：test001_mask_f_31_921_1.jpg
     ```
     #### 比如用curl发送
     ```bash
