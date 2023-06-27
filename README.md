@@ -171,6 +171,23 @@ torch升级为2.0.1+CU118的编译版本,tensorflow更新为2.12
     原文件名+_mask_f(女)/m(男)_年龄_Padding_面孔序列.jpg
     例：test001_mask_f_31_921_1.jpg
     ```
+    文件名解析示例
+    ```python
+    filename = "test001_mask_f_31_921_1.jpg"
+    parts = filename.split("_")  # Split the filename by underscore
+
+    # Split the last element by dot to separate the extension
+    last_part = parts[-1].split(".")
+    parts[-1] = last_part[0]
+    parts.append(last_part[1])
+
+    print(parts)
+    ```
+    得到
+    ```python
+    ['test001', 'mask', 'f', '31', '921', '1', 'jpg']
+    ```
+
     #### 比如用curl发送
     ```bash
     curl -X POST "http://localhost:8800/process/" -H  "accept: application/json" -H  "Content-Type: multipart/form-data" -F "file=@path_to_your_file"
