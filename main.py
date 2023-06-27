@@ -118,7 +118,8 @@ def main(
     for i, face_data in enumerate(successful_face_data):
         gender_letter = 'f' if face_data['gender'] == 'Female' else ('m' if face_data['gender'] == 'Male' else 'u')
         age = face_data['age']
-        filename = f"{original_name}_mask_{gender_letter}_{age}_{i + 1}.{filetype}"
+        padding = face_data['padding']
+        filename = f"{original_name}_mask_{gender_letter}_{age}_{padding}_{i + 1}.{filetype}"
         localpath = os.path.join(output_dir, filename)
         
         # Encode the image into binary data
