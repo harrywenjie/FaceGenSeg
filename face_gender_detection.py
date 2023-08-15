@@ -1,12 +1,9 @@
 ##face_gender_detection.py
 
-import cv2
-import numpy as np
-import insightface
 from insightface.app import FaceAnalysis
 
 # Initialize InsightFace gender-age model
-model_pack_name = 'buffalo_l'
+model_pack_name = './models/buffalo_l'
 app = FaceAnalysis(name=model_pack_name, allowed_modules=['detection', 'genderage'])
 app.prepare(ctx_id=-1, det_size=(640, 640))
 

@@ -4,6 +4,7 @@
 venv/
 face_parsing_PyTorch/__pycache__/
 __pycache__/
+models/
 static/
 .vscode/
 uploads/
